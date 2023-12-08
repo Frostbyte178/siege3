@@ -100,7 +100,7 @@ module.exports = ({ Class }) => {
     Class.homingMissile = {
         PARENT: "missile",
         LABEL: "Homing Missile",
-        BODY: { FOV: 10, SPEED: 0.1 },
+        BODY: { FOV: 10, SPEED: 0.04 },
         CONTROLLERS: ["nearestDifferentMaster"],
         FACING_TYPE: "smoothToTarget",
         AI: {chase: false, SKYNET: true, },
@@ -231,7 +231,7 @@ module.exports = ({ Class }) => {
             }, {
                 POSITION: [21, 12, -1.3, 0, 0, 0, 0],
                 PROPERTIES: {
-                    SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.pound, g.assass, g.assass, g.hunter, g.preda, g.sidewind, {health: 1.4, reload: 0.65}]),
+                    SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.pound, g.assass, g.assass, g.hunter, g.sidewind, {health: 1.5, reload: 0.65}]),
                     TYPE: "snake",
                     STAT_CALCULATOR: gunCalcNames.sustained,
                 },
