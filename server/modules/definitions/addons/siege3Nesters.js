@@ -97,12 +97,34 @@ module.exports = ({ Class }) => {
         ],
     }
 
+    Class.homingMissile = {
+        PARENT: "missile",
+        LABEL: "Homing Missile",
+        BODY: { FOV: 10, SPEED: 0.1 },
+        CONTROLLERS: ["nearestDifferentMaster"],
+        FACING_TYPE: "smoothToTarget",
+        AI: {chase: false, SKYNET: true, },
+        GUNS: [{
+            POSITION: [16.5, 10, 1.5, 0, 0, 180, 10],
+            PROPERTIES: {
+                AUTOFIRE: true,
+                STAT_CALCULATOR: gunCalcNames.thruster,
+                SHOOT_SETTINGS: combineStats([g.basic, g.missileTrail, g.rocketeerMissileTrail, {recoil: 1.7}]),
+                TYPE: ["bullet", { PERSISTS_AFTER_DEATH: true }],
+            },
+        }],
+        TURRETS: [{
+            POSITION: [9, 0, 0, 0, 0, 1],
+            TYPE: ["triangle", {COLOR: 16}]
+        }]
+    }
+
     Class.fireworkRocket = {
         PARENT: ["missile"],
         LABEL: "Firework Rocket",
         INDEPENDENT: true,
         GUNS: [{
-            POSITION: [6, 12, 1.4, 8, 0, 180, 0],
+            POSITION: [16.5, 10, 1.5, 0, 0, 180, 7.5],
             PROPERTIES: {
                 AUTOFIRE: true,
                 STAT_CALCULATOR: gunCalcNames.thruster,
@@ -209,32 +231,33 @@ module.exports = ({ Class }) => {
             }, {
                 POSITION: [21, 12, -1.3, 0, 0, 0, 0],
                 PROPERTIES: {
-                    SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.assass, g.assass, g.hunter, g.preda, g.sidewind]),
+                    SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.pound, g.assass, g.assass, g.hunter, g.preda, g.sidewind, {health: 1.4, reload: 0.65}]),
                     TYPE: "snake",
                     STAT_CALCULATOR: gunCalcNames.sustained,
                 },
             },
         ],
     }
-    Class.flameTurret = {
+    Class.homingMissileTurret = {
         PARENT: ["genericTank"],
-        LABEL: "Flamethrower",
         BODY: { FOV: 2 * base.FOV },
         COLOR: -1,
         INDEPENDENT: true,
         CONTROLLERS: [ "onlyAcceptInArc", "nearestDifferentMaster" ],
         GUNS: [
             {
-				POSITION: [14, 2.5, -1.7, 0, 6.5, 0, 0],
-			}, {
-				POSITION: [14, 2.5, -1.7, 0, -6.5, 0, 0],
-			}, {
-				POSITION: [22, 7, 1.3, 0, 0, 0, 0],
-				PROPERTIES: {
-					SHOOT_SETTINGS: combineStats([g.basic, {reload: 0.25, recoil: 0.1, shudder: 1.5, range: 0.5, spray: 7, health: 1/3, speed: 1.2, maxSpeed: 0.3}]),
-					TYPE: 'growBullet',
-				}
-			},
+                POSITION: [10, 12.5, -0.7, 10, 0, 0, 0],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.launcher, g.rocketeer, {speed: 8, maxSpeed: 2, damage: 0.6, size: 0.7, range: 1.25, reload: 2.5}]),
+                    TYPE: "homingMissile",
+                    STAT_CALCULATOR: gunCalcNames.sustained,
+                    AUTOFIRE: true,
+                },
+            }, {
+                POSITION: [17, 18, 0.65, 0, 0, 0, 0],
+            }, {
+                POSITION: [13.5, 13, -0.55, 0, 0, 0, 0],
+            },
         ],
     }
 
@@ -293,7 +316,7 @@ module.exports = ({ Class }) => {
         SHAPE: 5,
         SIZE: 50,
         BODY: {
-            FOV: 1.3,
+            FOV: 1.5,
             SPEED: base.SPEED * 0.25,
             HEALTH: base.HEALTH * 9,
             SHIELD: base.SHIELD * 1.5,
@@ -323,7 +346,6 @@ module.exports = ({ Class }) => {
     };
 
     // Desmos Nester
-
     Class.nestBrigadier = {
         PARENT: ["miniboss"],
         LABEL: "Nest Brigadier",
@@ -332,7 +354,7 @@ module.exports = ({ Class }) => {
         SHAPE: 5,
         SIZE: 50,
         BODY: {
-            FOV: 1.3,
+            FOV: 1.5,
             SPEED: base.SPEED * 0.25,
             HEALTH: base.HEALTH * 9,
             SHIELD: base.SHIELD * 1.5,
@@ -353,14 +375,14 @@ module.exports = ({ Class }) => {
         }, {
             POSITION: [1.5, 9, 1, 9.5, 0, 72*i+36, 0],
             PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.launcher, g.pound, g.destroy, g.halfspeed, g.halfspeed, g.halfspeed, g.doublereload, { size: 0.75 } ]),
+                SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.launcher, g.pound, g.destroy, g.halfspeed, g.halfspeed, g.halfspeed, g.doublereload, { damage: 1/6, health: 6, size: 0.75 } ]),
                 TYPE: "bigminimissile",
                 STAT_CALCULATOR: gunCalcNames.block
             },
         });
         Class.nestBrigadier.TURRETS.push({
-            POSITION: [8, 9, 0, 72*i, 120, 0],
-            TYPE: [ "flameTurret" ],
+            POSITION: [8, 9, 0, 72*i, 25, 0],
+            TYPE: [ "homingMissileTurret" ],
         });
     };
 
