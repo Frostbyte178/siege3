@@ -80,7 +80,7 @@ module.exports = ({ Class }) => {
         GUNS: [
             {
                 /*** LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
-                POSITION: [14, 6, 1, 0, 0, 180, 0],
+                POSITION: [14, 6, 1, 0, 0, 180, 1.5],
                 PROPERTIES: {
                     AUTOFIRE: true,
                     SHOOT_SETTINGS: combineStats([
@@ -375,7 +375,7 @@ module.exports = ({ Class }) => {
         }, {
             POSITION: [1.5, 9, 1, 9.5, 0, 72*i+36, 0],
             PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.launcher, g.pound, g.destroy, g.halfspeed, g.halfspeed, g.halfspeed, g.doublereload, { damage: 1/6, health: 6, size: 0.75 } ]),
+                SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.launcher, g.pound, g.destroy, g.halfspeed, g.halfspeed, g.halfspeed, g.veryfast, g.veryfast, { reload: 0.7, damage: 1/6, health: 7, size: 0.85, range: 1.3 } ]),
                 TYPE: "bigminimissile",
                 STAT_CALCULATOR: gunCalcNames.block
             },
