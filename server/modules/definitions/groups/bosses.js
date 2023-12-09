@@ -1066,7 +1066,7 @@ exports.nestKeeper = {
             TYPE: [ "auto4gun", { INDEPENDENT: true, COLOR: -1 } ],
         }, {
             POSITION: [9, 0, 0, 0, 360, 1],
-            TYPE: [ "auto4gun", { INDEPENDENT: true, COLOR: -1 } ],
+            TYPE: [ "boomerTurret", { INDEPENDENT: true, COLOR: -1 } ],
         },
     ],
 };

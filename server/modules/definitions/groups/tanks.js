@@ -827,7 +827,7 @@ exports.pillboxTurret = {
 exports.pillbox = {
     PARENT: "setTrap",
     LABEL: "Pillbox",
-    CONTROLLERS: ["goToMasterTarget", "nearestDifferentMaster"],
+    CONTROLLERS: ["nearestDifferentMaster"],
     INDEPENDENT: true,
     DIE_AT_RANGE: true,
     TURRETS: [
@@ -839,14 +839,17 @@ exports.pillbox = {
 };
 exports.unsetPillbox = {
     PARENT: 'unsetTrap',
+    LABEL: "Pillbox",
+    CONTROLLERS: ["nearestDifferentMaster"],
     INDEPENDENT: true,
+    DIE_AT_RANGE: true,
     TURRETS: [
         {
             POSITION: [11, 0, 0, 0, 360, 1],
             TYPE: "pillboxTurret",
         },
     ],
-}
+};
 
 // Swarms
 exports.swarm = {

@@ -79,17 +79,10 @@ module.exports = ({ Class }) => {
         PARENT: "missile",
         GUNS: [
             {
-                /*** LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
                 POSITION: [14, 6, 1, 0, 0, 180, 1.5],
                 PROPERTIES: {
                     AUTOFIRE: true,
-                    SHOOT_SETTINGS: combineStats([
-                        g.basic,
-                        g.skim,
-                        g.lowpower,
-                        g.muchmorerecoil,
-                        g.morespeed,
-                    ]),
+                    SHOOT_SETTINGS: combineStats([g.basic, g.skim, g.lowpower, g.muchmorerecoil, g.morespeed]),
                     TYPE: ["bullet", { PERSISTS_AFTER_DEATH: true }],
                     STAT_CALCULATOR: gunCalcNames.thruster,
                 },
@@ -117,6 +110,18 @@ module.exports = ({ Class }) => {
             POSITION: [9, 0, 0, 0, 0, 1],
             TYPE: ["triangle", {COLOR: 16}]
         }]
+    }
+    Class.slowHomingMissile = {
+        PARENT: "homingMissile",
+        GUNS: [{
+            POSITION: [16.5, 10, 1.5, 0, 0, 180, 10],
+            PROPERTIES: {
+                AUTOFIRE: true,
+                STAT_CALCULATOR: gunCalcNames.thruster,
+                SHOOT_SETTINGS: combineStats([g.basic, g.missileTrail, g.rocketeerMissileTrail, {recoil: 0.85}]),
+                TYPE: ["bullet", { PERSISTS_AFTER_DEATH: true }],
+            },
+        }],
     }
 
     Class.fireworkRocket = {
@@ -248,7 +253,7 @@ module.exports = ({ Class }) => {
             {
                 POSITION: [10, 12.5, -0.7, 10, 0, 0, 0],
                 PROPERTIES: {
-                    SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.launcher, g.rocketeer, {speed: 8, maxSpeed: 2, damage: 0.6, size: 0.7, range: 1.25, reload: 2.5}]),
+                    SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.launcher, g.rocketeer, {speed: 8, maxSpeed: 2, damage: 0.3, size: 0.7, range: 1.25, reload: 2.5}]),
                     TYPE: "homingMissile",
                     STAT_CALCULATOR: gunCalcNames.sustained,
                     AUTOFIRE: true,

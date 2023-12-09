@@ -31,10 +31,9 @@ module.exports = ({ Class }) => {
         SHAPE: 6,
         SIZE: 30,
         VALUE: 5e5,
-        CONTROLLERS: ['nearestDifferentMaster', 'onlyAcceptInArc'],
         BODY: {
             FOV: 1.4,
-            SPEED: 0.05 * base.SPEED,
+            SPEED: 0.1 * base.SPEED,
             HEALTH: 16 * base.HEALTH,
             SHIELD: 3 * base.SHIELD,
             DAMAGE: 3 * base.DAMAGE,
@@ -87,10 +86,9 @@ module.exports = ({ Class }) => {
         SHAPE: 6,
         SIZE: 30,
         VALUE: 5e5,
-        CONTROLLERS: ['nearestDifferentMaster', 'onlyAcceptInArc'],
         BODY: {
             FOV: 1.7,
-            SPEED: 0.08 * base.SPEED,
+            SPEED: 0.13 * base.SPEED,
             HEALTH: 11 * base.HEALTH,
             SHIELD: 2 * base.SHIELD,
             DAMAGE: 4 * base.DAMAGE,
@@ -147,10 +145,9 @@ module.exports = ({ Class }) => {
         SHAPE: 7,
         SIZE: 32,
         VALUE: 5e5,
-        CONTROLLERS: ['nearestDifferentMaster', 'onlyAcceptInArc'],
         BODY: {
             FOV: 1.3,
-            SPEED: base.SPEED * 0.08,
+            SPEED: base.SPEED * 0.13,
             HEALTH: base.HEALTH * 18,
             SHIELD: base.SHIELD * 4,
             REGEN: base.REGEN * 1.5,
@@ -199,7 +196,6 @@ module.exports = ({ Class }) => {
         SHAPE: 7,
         SIZE: 32,
         VALUE: 5e5,
-        CONTROLLERS: ['nearestDifferentMaster', 'onlyAcceptInArc'],
         BODY: {
             FOV: 1.5,
             SPEED: base.SPEED * 0.14,
@@ -229,6 +225,130 @@ module.exports = ({ Class }) => {
     }
 
     // Octo rogues
+    Class.healerBulletIndicated = {
+        PARENT: "healerBullet",
+        TURRETS: [
+            {
+                POSITION: [12, 0, 0, 0, 0, 1],
+                TYPE: "healerSymbol"
+            }
+        ],
+    }
+    Class.unsetSurgeonPillboxTurret = {
+        PARENT: "genericTank",
+        LABEL: "",
+        COLOR: "grey",
+        BODY: {
+            FOV: 3,
+        },
+        HAS_NO_RECOIL: true,
+        CONTROLLERS: [["spin", { independent: true, speed: 0.08 }]],
+        TURRETS: [
+            {
+                POSITION: [13, 0, 0, 0, 360, 1],
+                TYPE: "healerSymbol",
+            },
+        ],
+        GUNS: [
+            {
+                POSITION: [17, 11, 1, 0, 0, 90, 0],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, g.healer, g.turret, {reload: 2, damage: 2}]),
+                    TYPE: "healerBullet",
+                    AUTOFIRE: true,
+                },
+            },
+            {
+                POSITION: [14, 11, 1, 0, 0, 90, 0.5],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, g.healer, g.turret, {reload: 2, damage: 2}]),
+                    TYPE: "healerBullet",
+                    AUTOFIRE: true,
+                },
+            },
+            {
+                POSITION: [17, 11, 1, 0, 0, 270, 0],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, g.healer, g.turret, {reload: 2, damage: 2}]),
+                    TYPE: "healerBullet",
+                    AUTOFIRE: true,
+                },
+            },
+            {
+                POSITION: [14, 11, 1, 0, 0, 270, 0.5],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, g.healer, g.turret, {reload: 2, damage: 2}]),
+                    TYPE: "healerBullet",
+                    AUTOFIRE: true,
+                },
+            },
+        ],
+    }
+    Class.unsetSurgeonPillbox = {
+        PARENT: "trap",
+        LABEL: "Pillbox",
+        SHAPE: -6,
+        MOTION_TYPE: "motor",
+        CONTROLLERS: ["nearestDifferentMaster"],
+        INDEPENDENT: true,
+        BODY: {
+            SPEED: 1,
+            DENSITY: 5,
+            DAMAGE: 0
+        },
+        DIE_AT_RANGE: true,
+        TURRETS: [
+            {
+                POSITION: [11, 0, 0, 0, 360, 1],
+                TYPE: "unsetSurgeonPillboxTurret",
+            },
+        ],
+    }
+
+    Class.rogueAlchemistPrimaryTurret = {
+        PARENT: "genericTank",
+        LABEL: "Turret",
+        INDEPENDENT: true,
+        CONTROLLERS: ['nearestDifferentMaster'],
+        COLOR: "grey",
+        GUNS: [
+            {
+                POSITION: [26, 7, 1, 0, 0, 0, 0],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, g.gunner, g.mach, g.morespeed, {damage: 0.75}]),
+                    TYPE: "bullet",
+                },
+            }, {
+                POSITION: [23, 10, 1, 0, 0, 0, 0.5],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, g.gunner, g.mach, g.morespeed, {damage: 0.75}]),
+                    TYPE: "bullet",
+                },
+            }, {
+                POSITION: [12, 10, 1.4, 8, 0, 0, 0],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.morespeed, {damage: 0.75}]),
+                    TYPE: "bullet",
+                },
+            },
+        ],
+    }
+    Class.rogueAlchemistSecondaryTurret = {
+        PARENT: "genericTank",
+        LABEL: "Turret",
+        INDEPENDENT: true,
+        COLOR: "grey",
+        GUNS: [
+            {
+                POSITION: [11, 13, 1.5, 9, 0, 0, 0],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.mach, {damage: 1.8, reload: 1.4}]),
+                    TYPE: "bullet",
+                    AUTOFIRE: true,
+                },
+            },
+        ],
+    }
     Class.rogueAlchemist = {
         PARENT: "miniboss",
         LABEL: "Rogue Alchemist",
@@ -237,26 +357,71 @@ module.exports = ({ Class }) => {
         SHAPE: 8,
         SIZE: 34,
         VALUE: 5e5,
-        CONTROLLERS: ['nearestDifferentMaster', 'onlyAcceptInArc'],
         BODY: {
             FOV: 1.6,
-            SPEED: base.SPEED * 0.14,
-            HEALTH: base.HEALTH * 16,
+            SPEED: base.SPEED * 0.2,
+            HEALTH: base.HEALTH * 12,
             SHIELD: base.SHIELD * 3,
-            REGEN: base.REGEN * 1,
+            REGEN: base.REGEN * 0.3,
             DAMAGE: base.DAMAGE * 3.5,
         },
         GUNS: Array(8).fill().map((_, i) => ([
             {
-                POSITION: [11.5, 6, 1, 0, 0, 45*i, 0],
-            }
+                POSITION: [6, 5, -0.5, 7.5, 0, 45*i, 0],
+            }, {
+                POSITION: [12.5, 5.5, 1, 0, 0, 45*i, 0],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.healer, {reload: 2, maxSpeed: 0.1, range: 0.7}]),
+                    TYPE: "healerBulletIndicated",
+                },
+            },
         ])).flat(),
         TURRETS: Array(8).fill().map((_, i) => (
             {
                 POSITION: [5, 10, 0, 45*(i+0.5), 0, 0],
-                TYPE: "rogueCoalitionTurret",
+                TYPE: "rogueAlchemistSecondaryTurret",
             }
         )),
+    }
+    Class.rogueAlchemist.TURRETS.push({
+        POSITION: [10, 0, 0, 0, 360, 1],
+        TYPE: "rogueAlchemistPrimaryTurret",
+    });
+
+    Class.rogueInventorPrimaryTurret = {
+        PARENT: "genericTank",
+        LABEL: "Turret",
+        INDEPENDENT: true,
+        CONTROLLERS: ['nearestDifferentMaster'],
+        COLOR: "grey",
+        GUNS: [
+            {
+                POSITION: [22, 13.5, 1, 0, 0, 0, 0]
+            }, {
+                POSITION: [26, 8.5, 1, 0, 0, 0, 0],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.rifle, g.healer, g.morespeed]),
+                    TYPE: "healerBulletIndicated"
+                }
+            }
+        ],
+    }
+    Class.rogueInventorSecondaryTurret = {
+        PARENT: "genericTank",
+        LABEL: "Turret",
+        INDEPENDENT: true,
+        COLOR: "grey",
+        GUNS: [
+            {
+                POSITION: [9, 10, 0.6, 7, 0, 0, 0],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.swarm, g.morespeed, {range: 1.8, reload: 1.6}]),
+                    TYPE: ["swarm", {INDEPENDENT: true}],
+                    AUTOFIRE: true,
+                    STAT_CALCULATOR: gunCalcNames.swarm,
+                },
+            },
+        ],
     }
     Class.rogueInventor = {
         PARENT: "miniboss",
@@ -266,26 +431,82 @@ module.exports = ({ Class }) => {
         SHAPE: 8,
         SIZE: 34,
         VALUE: 5e5,
-        CONTROLLERS: ['nearestDifferentMaster', 'onlyAcceptInArc'],
         BODY: {
             FOV: 1.6,
             SPEED: base.SPEED * 0.14,
-            HEALTH: base.HEALTH * 16,
-            SHIELD: base.SHIELD * 3,
-            REGEN: base.REGEN * 1,
+            HEALTH: base.HEALTH * 18,
+            SHIELD: base.SHIELD * 4,
+            REGEN: base.REGEN * 0.65,
             DAMAGE: base.DAMAGE * 3.5,
         },
         GUNS: Array(8).fill().map((_, i) => ([
             {
-                POSITION: [11.5, 6, 1, 0, 0, 45*i, 0],
+                POSITION: [12.5, 4, 1, 0, 0, 45*i, 0],
+            }, {
+                POSITION: [11, 6, 1, 0, 0, 45*i, 0],
+            },  {
+                POSITION: [1.25, 6, 1, 12.25, 0, 45*i, 0],
+            }, {
+                POSITION: [1, 6, 1.15, 13.5, 0, 45*i, 0],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.trap, g.block, g.construct, g.veryfast, g.hexatrap, {reload: 1.8}]),
+                    TYPE: "unsetPillbox",
+                    STAT_CALCULATOR: gunCalcNames.block,
+                }
             }
         ])).flat(),
         TURRETS: Array(8).fill().map((_, i) => (
             {
                 POSITION: [5, 10, 0, 45*(i+0.5), 0, 0],
-                TYPE: "rogueCoalitionTurret",
+                TYPE: "rogueInventorSecondaryTurret",
             }
         )),
+    }
+    Class.rogueInventor.TURRETS.push({
+        POSITION: [10, 0, 0, 0, 360, 1],
+        TYPE: "rogueInventorPrimaryTurret",
+    });
+
+    Class.roguePioneerPrimaryTurret = {
+        PARENT: "genericTank",
+        LABEL: "Turret",
+        INDEPENDENT: true,
+        BODY: {FOV: 10},
+        CONTROLLERS: ['nearestDifferentMaster'],
+        COLOR: "grey",
+        GUNS: [
+            {
+                POSITION: [29, 9, 1, 0, 0, 0, 0],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.sniper, g.assass, g.assass, {range: 1.2}]),
+                    TYPE: "bullet",
+                },
+            }, {
+                POSITION: [5, 9, -1.4, 8, 0, 0, 0],
+            },
+        ],
+    }
+    Class.roguePioneerSecondaryTurret = {
+        PARENT: ["genericTank"],
+        BODY: { FOV: 2 * base.FOV },
+        COLOR: 16,
+        INDEPENDENT: true,
+        CONTROLLERS: [ "onlyAcceptInArc", "nearestDifferentMaster" ],
+        GUNS: [
+            {
+                POSITION: [10, 12.5, -0.7, 10, 0, 0, 0],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.launcher, g.rocketeer, {speed: 8, maxSpeed: 2, damage: 0.25, size: 0.7, range: 1.45, reload: 2.5}]),
+                    TYPE: "slowHomingMissile",
+                    STAT_CALCULATOR: gunCalcNames.sustained,
+                    AUTOFIRE: true,
+                },
+            }, {
+                POSITION: [17, 18, 0.65, 0, 0, 0, 0],
+            }, {
+                POSITION: [13.5, 13, -0.55, 0, 0, 0, 0],
+            },
+        ],
     }
     Class.roguePioneer = {
         PARENT: "miniboss",
@@ -295,7 +516,6 @@ module.exports = ({ Class }) => {
         SHAPE: 8,
         SIZE: 34,
         VALUE: 5e5,
-        CONTROLLERS: ['nearestDifferentMaster', 'onlyAcceptInArc'],
         BODY: {
             FOV: 1.6,
             SPEED: base.SPEED * 0.14,
@@ -306,19 +526,36 @@ module.exports = ({ Class }) => {
         },
         GUNS: Array(8).fill().map((_, i) => ([
             {
-                POSITION: [11.5, 6, 1, 0, 0, 45*i, 0],
+                POSITION: [12.5, 4, 1, 0, 0, 45*i, 0],
+            }, {
+                POSITION: [11, 6, 1, 0, 0, 45*i, 0],
+            },  {
+                POSITION: [1.25, 6, 1, 12.25, 0, 45*i, 0],
+            }, {
+                POSITION: [1, 6, 1.15, 13.5, 0, 45*i, 0],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.trap, g.block, g.construct, g.fast, g.hexatrap, {health: 1.5, reload: 3}]),
+                    TYPE: "unsetSurgeonPillbox",
+                    STAT_CALCULATOR: gunCalcNames.block,
+                    DESTROY_OLDEST_CHILD: true,
+                    MAX_CHILDREN: 2,
+                }
             }
         ])).flat(),
         TURRETS: Array(8).fill().map((_, i) => (
             {
                 POSITION: [5, 10, 0, 45*(i+0.5), 0, 0],
-                TYPE: "rogueCoalitionTurret",
+                TYPE: "roguePioneerSecondaryTurret",
             }
         )),
     }
+    Class.roguePioneer.TURRETS.push({
+        POSITION: [10, 0, 0, 0, 360, 1],
+        TYPE: "roguePioneerPrimaryTurret",
+    });
 
     
     Class.rogues.UPGRADES_TIER_0.splice(1, 0, "rogueBarricade", "rogueBalustrade");
     Class.rogues.UPGRADES_TIER_0.splice(4, 0, "rogueBattalion", "rogueCoalition");
-    Class.rogues.UPGRADES_TIER_0.splice(7, 0, "rogueAlchemist", "rogueInventor", "roguePioneer");
+    Class.rogues.UPGRADES_TIER_0.splice(6, 0, "rogueAlchemist", "rogueInventor", "roguePioneer");
 }
