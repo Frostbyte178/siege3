@@ -265,6 +265,26 @@ module.exports = ({ Class }) => {
             },
         ],
     }
+    Class.undertowTurret = {
+        PARENT: ["genericTank"],
+        BODY: { FOV: 2 * base.FOV },
+        COLOR: -1,
+        INDEPENDENT: true,
+        CONTROLLERS: [ "onlyAcceptInArc", "nearestDifferentMaster" ],
+        GUNS: [
+            {
+                POSITION: [14, 15, 0.8, 0, 0, 0, 0],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.destroy, {damage: 1/2, speed: 2, maxSpeed: 2}]),
+                    TYPE: "bullet",
+                },
+            }, {
+                POSITION: [5, 13, 0, 4, -7.5, 82.5, 0],
+            }, {
+                POSITION: [5, 13, 0, 4, 7.5, -82.5, 0],
+            },
+        ],
+    }
 
     // Ok now it's Nester time.
 
@@ -288,9 +308,8 @@ module.exports = ({ Class }) => {
         GUNS: [],
         TURRETS: [
             {
-                // NOTE, THIS IS MEANT TO BE FOR UNDERTOW, UNDERTOW IS NOT ADDED YET.
                 POSITION: [9, 0, 0, 0, 360, 1],
-                TYPE: [ "volute", { INDEPENDENT: true, COLOR: -1 }, {CONTROLLERS: ["onlyAcceptInArc", "nearestDifferentMaster"]}, ],
+                TYPE: "undertowTurret",
             },
         ],
     };
