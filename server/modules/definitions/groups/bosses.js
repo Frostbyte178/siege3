@@ -1000,6 +1000,7 @@ exports.nestKeeper = {
         DAMAGE: base.DAMAGE * 2.5,
     },
     MAX_CHILDREN: 15,
+    VALUE: 3e5,
     GUNS: [
         {
             POSITION: [3.5, 6.65, 1.2, 8, 0, 35, 0],
@@ -1085,6 +1086,7 @@ exports.nestWarden = {
         REGEN: base.REGEN,
         DAMAGE: base.DAMAGE * 2.5,
     },
+    VALUE: 3e5,
     GUNS: [],
     TURRETS: [
         {
@@ -1128,6 +1130,7 @@ exports.nestGuardian = {
         REGEN: base.REGEN,
         DAMAGE: base.DAMAGE * 2.5,
     },
+    VALUE: 3e5,
     GUNS: [],
     TURRETS: [
         {

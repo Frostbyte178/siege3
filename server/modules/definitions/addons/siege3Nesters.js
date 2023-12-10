@@ -305,6 +305,7 @@ module.exports = ({ Class }) => {
             REGEN: base.REGEN,
             DAMAGE: base.DAMAGE * 2.5,
         },
+        VALUE: 3e5,
         GUNS: [],
         TURRETS: [
             {
@@ -347,6 +348,7 @@ module.exports = ({ Class }) => {
             REGEN: base.REGEN,
             DAMAGE: base.DAMAGE * 2.5,
         },
+        VALUE: 3e5,
         GUNS: [],
         TURRETS: [{
                 POSITION: [9, 0, 0, 0, 360, 1],
@@ -369,7 +371,7 @@ module.exports = ({ Class }) => {
         });
     };
 
-    // Desmos Nester
+    // Launcher Nester
     Class.nestBrigadier = {
         PARENT: ["miniboss"],
         LABEL: "Nest Brigadier",
@@ -385,6 +387,7 @@ module.exports = ({ Class }) => {
             REGEN: base.REGEN,
             DAMAGE: base.DAMAGE * 2.5,
         },
+        VALUE: 3e5,
         GUNS: [],
         TURRETS: [
             {
