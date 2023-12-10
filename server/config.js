@@ -178,9 +178,9 @@ module.exports = {
         [19, [
             [1, 'crasher']
         ]],
-        [1, [
-            [1, 'sentryGun'], [1, 'sentrySwarm'], [1, 'sentryTrap']
-        ]]
+        // [1, [
+        //     [1, 'sentryGun'], [1, 'sentrySwarm'], [1, 'sentryTrap']
+        // ]]
     ],
 
     // The possible boss types that can spawn.
