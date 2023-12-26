@@ -173,6 +173,142 @@ module.exports = ({ Class }) => {
             },
         ],
     };
+Class.nestbuilder = {
+    PARENT: ["genericTank"],
+    GUNS: [
+        {
+            POSITION: [18, 12, 1, 0, 0, 0, 0],
+        },
+        {
+            POSITION: [2, 12, 1.1, 18, 0, 0, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.trap, g.block, g.halfreload, g.halfreload]),
+                TYPE: "unsetTrap",
+	        AUTOFIRE: true,
+            },
+        },
+    ],
+};
+
+
+Class.nestreactorspinner = {
+    PARENT: ["genericTank"],
+    COLOR: 14,
+    CONTROLLERS: [["spin", { independent: true, speed: -0.05 }]],
+       GUNS: [
+            {
+                /*** LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */
+                POSITION: [15, 7, 1, 0, 0, 0, 0],
+            },
+            {
+                POSITION: [3, 7, 1.7, 15, 0, 0, 0],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.trap, g.hexatrap]),
+                    TYPE: "trap",
+                    STAT_CALCULATOR: gunCalcNames.trap,
+		    AUTOFIRE: true,
+		    WAIT_TO_CYCLE: true,
+                },
+            },
+            {
+                POSITION: [15, 7, 1, 0, 0, 51.42857143, 4 * 0.1428571429],
+            },
+            {
+                POSITION: [3, 7, 1.7, 15, 0, 51.42857143, 4 * 0.1428571429],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.trap, g.hexatrap]),
+                    TYPE: "trap",
+                    STAT_CALCULATOR: gunCalcNames.trap,
+		    AUTOFIRE: true,
+		    WAIT_TO_CYCLE: true,
+                },
+            },
+            {
+                POSITION: [15, 7, 1, 0, 0, 2 * 51.42857143, 1 * 0.1428571429],
+            },
+            {
+                POSITION: [3, 7, 1.7, 15, 0, 2 * 51.42857143, 1 * 0.1428571429],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.trap, g.hexatrap]),
+                    TYPE: "trap",
+                    STAT_CALCULATOR: gunCalcNames.trap,
+		    AUTOFIRE: true,
+		    WAIT_TO_CYCLE: true,
+                },
+            },
+            {
+                POSITION: [15, 7, 1, 0, 0, 3 * 51.42857143, 5 * 0.1428571429],
+            },
+            {
+                POSITION: [3, 7, 1.7, 15, 0, 3 * 51.42857143, 5 * 0.1428571429],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.trap, g.hexatrap]),
+                    TYPE: "trap",
+                    STAT_CALCULATOR: gunCalcNames.trap,
+		    AUTOFIRE: true,
+		    WAIT_TO_CYCLE: true,
+                },
+            },
+            {
+                POSITION: [15, 7, 1, 0, 0, 4 * 51.42857143, 2 * 0.1428571429],
+            },
+            {
+                POSITION: [3, 7, 1.7, 15, 0, 4 * 51.42857143, 2 * 0.1428571429],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.trap, g.hexatrap]),
+                    TYPE: "trap",
+                    STAT_CALCULATOR: gunCalcNames.trap,
+		    AUTOFIRE: true,
+		    WAIT_TO_CYCLE: true,
+                },
+            },
+            {
+                POSITION: [15, 7, 1, 0, 0, 5 * 51.42857143, 6 * 0.1428571429],
+            },
+            {
+                POSITION: [3, 7, 1.7, 15, 0, 5 * 51.42857143, 6 * 0.1428571429],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.trap, g.hexatrap]),
+                    TYPE: "trap",
+                    STAT_CALCULATOR: gunCalcNames.trap,
+		    AUTOFIRE: true,
+		    WAIT_TO_CYCLE: true,
+                },
+            },
+            {
+                POSITION: [15, 7, 1, 0, 0, 6 * 51.42857143, 3 * 0.1428571429],
+            },
+            {
+                POSITION: [3, 7, 1.7, 15, 0, 6 * 51.42857143, 3 * 0.1428571429],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.trap, g.hexatrap]),
+                    TYPE: "trap",
+                    STAT_CALCULATOR: gunCalcNames.trap,
+		    AUTOFIRE: true,
+		    WAIT_TO_CYCLE: true,
+                },
+            },
+        ],
+};
+Class.nestreactortrap = {
+    PARENT: ["genericTank"],
+    LABEL: "nest trapper",
+    GUNS: [
+        {
+            POSITION: [15, 7, 1, 0, 0, 0, 0],
+        },
+        {
+            POSITION: [3, 7, 1.7, 15, 0, 0, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.trap]),
+                AUTOFIRE: true,
+                TYPE: "trap",
+                STAT_CALCULATOR: gunCalcNames.trap,
+		
+            },
+        },
+    ],
+};
 
     Class.miniMissileShield = {
         PARENT: "missile",
@@ -413,6 +549,292 @@ module.exports = ({ Class }) => {
         });
     };
 
+// Warning, Nest bulk is unbalanced as shit and needs to be reworked heavily
+Class.nestIndustry = {
+    PARENT: ["miniboss"],
+    LABEL: "Nest Industry",
+  UPGRADE_LABEL: "Nest Industry",
+  UPGRADE_COLOR: 14,
+    COLOR: 14,
+    SHAPE: 5,
+    MAX_CHILDREN: 5,
+    SIZE: 55,
+    BODY: {
+        FOV: 2.2,
+        SPEED: base.SPEED * 0.1,
+        HEALTH: base.HEALTH * 10,
+        SHIELD: base.SHIELD * 1.1,
+        REGEN: base.REGEN,
+        DAMAGE: base.DAMAGE * 2.4,
+    },
+    GUNS: [
+        {
+            POSITION: [11, 12, 1, 0, 0, 35, 0],
+        },
+        {
+            /*** LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
+            POSITION: [2, 14, 1, 11, 0, 35, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.drone, g.weak, g.weak, g.celeslower, g.nest_keeper]),
+                TYPE: ["sentinelCrossbow"],
+                SYNCS_SKILLS: true,
+                AUTOFIRE: true,
+                STAT_CALCULATOR: gunCalcNames.drone,
+            },
+        },
+        {
+            POSITION: [11, 12, 1, 0, 0, -35, 0],
+        },
+        {
+            /*** LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
+            POSITION: [2, 14, 1, 11, 0, -35, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.drone, g.weak, g.weak, g.celeslower, g.nest_keeper]),
+                TYPE: ["sentinelMinigun"],
+                SYNCS_SKILLS: true,
+                AUTOFIRE: true,
+                STAT_CALCULATOR: gunCalcNames.drone,
+            },
+        },
+        {
+            POSITION: [11, 12, 1, 0, 0, 180, 0],
+        },
+        {
+            /*** LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
+            POSITION: [2, 14, 1, 11, 0, 180, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.drone, g.weak, g.weak, g.celeslower, g.nest_keeper]),
+                TYPE: ["sentinelLauncher"],
+                SYNCS_SKILLS: true,
+                AUTOFIRE: true,
+                STAT_CALCULATOR: gunCalcNames.drone,
+            },
+        },
+        {
+            POSITION: [11, 12, 1, 0, 0, 108, 0],
+        },
+        {
+            /*** LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
+            POSITION: [2, 14, 1, 11, 0, 108, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.drone, g.weak, g.weak, g.celeslower, g.nest_keeper]),
+                TYPE: ["sentinelLauncher"],
+                SYNCS_SKILLS: true,
+                AUTOFIRE: true,
+                STAT_CALCULATOR: gunCalcNames.drone,
+            },
+	},
+        {
+            POSITION: [11, 12, 1, 0, 0, -108, 0],
+        },
+        {
+            /*** LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
+            POSITION: [2, 14, 1, 11, 0, -108, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.drone, g.weak, g.weak, g.celeslower, g.nest_keeper]),
+                TYPE: ["sentinelCrossbow"],
+                SYNCS_SKILLS: true,
+                AUTOFIRE: true,
+                STAT_CALCULATOR: gunCalcNames.drone,
+            },
+        },
+    ],
+    TURRETS: [
+        {
+            POSITION: [8, 9, 0, 72, 120, 0],
+            TYPE: [
+                "nestbuilder",
+                {
+                    INDEPENDENT: true,
+                    COLOR: 14,
+	            AUTOFIRE: true,
+                },
+            ],
+        },
+        {
+            POSITION: [8, 9, 0, 0, 120, 0],
+            TYPE: [
+                "nestbuilder",
+                {
+                    INDEPENDENT: true,
+                    COLOR: 14,
+	            AUTOFIRE: true,
+                },
+            ],
+        },
+        {
+            POSITION: [8, 9, 0, 144, 120, 0],
+            TYPE: [
+                "nestbuilder",
+                {
+                    INDEPENDENT: true,
+                    COLOR: 14,
+	            AUTOFIRE: true,
+                },
+            ],
+        },
+        {
+            POSITION: [8, 9, 0, 216, 120, 0],
+            TYPE: [
+                "nestbuilder",
+                {
+                    INDEPENDENT: true,
+                    COLOR: 14,
+	            AUTOFIRE: true,
+                },
+            ],
+        },
+        {
+            POSITION: [8, 9, 0, -72, 120, 0],
+            TYPE: [
+                "nestbuilder",
+                {
+                    INDEPENDENT: true,
+                    COLOR: 14,
+	            AUTOFIRE: true,
+                },
+            ],
+        },
+        {
+            POSITION: [9, 0, 0, 0, 360, 1],
+            TYPE: [
+                "nestreactorspinner",
+                {
+                    INDEPENDENT: true,
+                    COLOR: 14,
+                },
+            ],
+        },
+    ],
+};
+
+// Siece note, PLEASE REDO "NEST REACTOR" TO LOOK LIKE IT HAS PROPER SIDEWINDER BARRELS, THIS WAS TAKEN FROM AN OLDER ERA
+
+Class.nestSynthesizer = {
+    PARENT: ["miniboss"],
+    LABEL: "Nest Synthesizer",
+  UPGRADE_LABEL: "Nest Synthesizer",
+  UPGRADE_COLOR: 14,
+    COLOR: 14,
+    SHAPE: 5,
+    SIZE: 50,
+    BODY: {
+        FOV: 1.3,
+        SPEED: base.SPEED * 0.25,
+        HEALTH: base.HEALTH * 9,
+        SHIELD: base.SHIELD * 1.5,
+        REGEN: base.REGEN,
+        DAMAGE: base.DAMAGE * 2.5,
+    },
+    GUNS: [
+        {
+            POSITION: [3.5, 6.65, 1.2, 8, 0, 35, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.drone, g.nest_keeper]),
+                TYPE: "snake",
+                AUTOFIRE: true,
+                LABEL: "Mega Crasher",
+            },
+        },
+        {
+            POSITION: [3.5, 6.65, 1.2, 8, 0, -35, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.drone, g.nest_keeper]),
+                TYPE: "snake",
+                AUTOFIRE: true,
+                LABEL: "Mega Crasher",
+            },
+        },
+        {
+            POSITION: [3.5, 6.65, 1.2, 8, 0, 180, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.drone, g.nest_keeper]),
+                TYPE: "snake",
+                AUTOFIRE: true,
+                LABEL: "Mega Crasher",
+            },
+        },
+        {
+            POSITION: [3.5, 6.65, 1.2, 8, 0, 108, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.drone, g.nest_keeper]),
+                TYPE: "snake",
+                AUTOFIRE: true,
+                LABEL: "Mega Crasher",
+            },
+        },
+        {
+            POSITION: [3.5, 6.65, 1.2, 8, 0, -108, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.drone, g.nest_keeper]),
+                TYPE: "snake",
+                AUTOFIRE: true,
+                LABEL: "Mega Crasher",
+            },
+        },
+    ],
+    TURRETS: [
+        {
+            POSITION: [8, 9, 0, 72, 120, 0],
+            TYPE: [
+                "nestreactortrap",
+                {
+                    INDEPENDENT: true,
+                    COLOR: 14,
+                },
+            ],
+        },
+        {
+            POSITION: [8, 9, 0, 0, 120, 0],
+            TYPE: [
+                "nestreactortrap",
+                {
+                    INDEPENDENT: true,
+                    COLOR: 14,
+                },
+            ],
+        },
+        {
+            POSITION: [8, 9, 0, 144, 120, 0],
+            TYPE: [
+                "nestreactortrap",
+                {
+                    INDEPENDENT: true,
+                    COLOR: 14,
+                },
+            ],
+        },
+        {
+            POSITION: [8, 9, 0, 216, 120, 0],
+            TYPE: [
+                "nestreactortrap",
+                {
+                    INDEPENDENT: true,
+                    COLOR: 14,
+                },
+            ],
+        },        {
+            POSITION: [8, 9, 0, -72, 120, 0],
+            TYPE: [
+                "nestreactortrap",
+                {
+                    INDEPENDENT: true,
+                    COLOR: 14,
+                },
+            ],
+        },
+        {
+            POSITION: [9, 0, 0, 0, 360, 1],
+            TYPE:[ "predator",
+		{
+		COLOR: 14,
+		},
+	],
+        },
+    ],
+};
+
+
     //Push Nester to Nesters.
-    Class.nesters.UPGRADES_TIER_0.push("nestPurger", "nestGrenadier", "nestBrigadier");
+    Class.nesters.UPGRADES_TIER_0.push("nestPurger", "nestGrenadier", "nestBrigadier", "nestIndustry", "nestSynthesizer");
 }
