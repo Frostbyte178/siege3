@@ -497,7 +497,7 @@ module.exports = ({ Class }) => {
                 POSITION: [10, 12.5, -0.7, 10, 0, 0, 0],
                 PROPERTIES: {
                     SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.launcher, g.rocketeer, {speed: 8, maxSpeed: 2, damage: 0.25, size: 0.7, range: 1.45, reload: 2.5}]),
-                    TYPE: "slowHomingMissile",
+                    TYPE: ["homingMissile", {RECOIL_MULTIPLIER: 0.5}],
                     STAT_CALCULATOR: gunCalcNames.sustained,
                     AUTOFIRE: true,
                 },

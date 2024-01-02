@@ -16,29 +16,6 @@ const harvesterStats = {
 };
 
 module.exports = ({ Class }) => {
-    // Misc
-    Class.trueBomb = {
-        PARENT: "bullet",
-        GUNS: [
-            {
-                POSITION: [0, 10, 0, 0, 0, 0, 9999],
-                PROPERTIES: {
-                    SHOOT_SETTINGS: combineStats([g.basic, {speed: 0, range: 0.05, damage: 1.3, health: 1e6, size: 16}]),
-                    TYPE: ["bullet", { MOTION_TYPE: "withMaster", COLOR: 2, PERSISTS_AFTER_DEATH: true, ALPHA: 0.6 }],
-                    SHOOT_ON_DEATH: true,
-                    STAT_CALCULATOR: gunCalcNames.sustained,
-                }
-            }
-        ],
-        TURRETS: [
-            {
-                POSITION: [12.5, 0, 0, 0, 0, 1],
-                TYPE: ["egg", {COLOR: 16}]
-            },
-        ]
-    }
-
-
     Class.genericHarvester = {
         PARENT: "miniboss",
         FACING_TYPE: "toTarget",
