@@ -352,7 +352,7 @@ class io_nearestDifferentMaster extends IO {
         (!e.invuln && !e.master.master.passive && !this.body.master.master.passive) &&
         (this.body.aiSettings.seeInvisible || this.body.isArenaCloser || e.alpha > 0.5) &&
         (!e.bond) &&
-        (e.type === "miniboss" || e.type === "tank" || e.type === "crasher" || (!this.body.aiSettings.IGNORE_SHAPES && e.type === 'food')) &&
+        (e.type === "miniboss" || e.type === "tank" || (!this.body.aiSettings.IGNORE_SHAPES && e.type === 'crasher') || (!this.body.aiSettings.IGNORE_SHAPES && e.type === 'food')) &&
         (this.body.aiSettings.BLIND || ((e.x - m.x) * (e.x - m.x) < sqrRange && (e.y - m.y) * (e.y - m.y) < sqrRange)) &&
         (this.body.aiSettings.SKYNET || ((e.x - mm.x) * (e.x - mm.x) < sqrRangeMaster && (e.y - mm.y) * (e.y - mm.y) < sqrRangeMaster));
     }
@@ -563,6 +563,35 @@ class io_minion extends IO {
         }
     }
 }
+class io_circleTarget extends IO {
+    constructor(body, opts = {}) {
+        super(body);
+        this.orbitRange = opts.range ?? 400;
+        this.turnwise = opts.turnwise ?? 1;
+    }
+    think(input) {
+        if (input.target != null) {
+            let target = new Vector(input.target.x, input.target.y);
+            // Set target
+            let distanceToRange = target.length - this.orbitRange,
+                targetBearing = util.clamp(distanceToRange / 200, -Math.PI / 2, Math.PI / 2) - Math.PI / 2 * this.turnwise,
+                targetAngle = targetBearing + target.direction,
+                newX = target.length * Math.cos(targetAngle),
+                newY = target.length * Math.sin(targetAngle);
+            // Set goal
+            let dir = this.turnwise * target.direction + 0.05;
+            let goal = {
+                x: this.body.x + target.x - this.orbitRange * Math.cos(dir),
+                y: this.body.y + target.y - this.orbitRange * Math.sin(dir),
+            }
+            
+            return {
+                goal,
+                target: new Vector(newX, newY),
+            }
+        }
+    }
+}
 class io_hangOutNearMaster extends IO {
     constructor(body) {
         super(body)
@@ -724,6 +753,7 @@ let ioTypes = {
     hangOutNearMaster: io_hangOutNearMaster,
     fleeAtLowHealth: io_fleeAtLowHealth,
     wanderAroundMap: io_wanderAroundMap,
+    circleTarget: io_circleTarget,
 };
 
 module.exports = { ioTypes, IO };

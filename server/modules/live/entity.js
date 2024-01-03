@@ -844,6 +844,7 @@ class Entity extends EventEmitter {
         this.levelCap = undefined;
         this.autospinBoost = 0;
         this.antiNaN = new antiNaN(this);
+        this.forceTwiggle = false;
         // Get a new unique id
         this.id = entitiesIdLog++;
         this.team = this.id;
@@ -1275,6 +1276,7 @@ class Entity extends EventEmitter {
                 o.bindToMaster(def.POSITION, this, def.VULNERABLE);
             }
         }
+        if (set.FORCE_TWIGGLE != null) this.forceTwiggle = set.FORCE_TWIGGLE;
         if (set.ON != null) this.onDef = set.ON
         if (set.mockup != null) {
             this.mockup = set.mockup;
@@ -1617,7 +1619,7 @@ class Entity extends EventEmitter {
             mirrorMasterAngle: this.settings.mirrorMasterAngle ?? false,
             perceptionAngleIndependence: this.perceptionAngleIndependence, //vfacing: this.vfacing,
             defaultAngle: this.firingArc[0],
-            twiggle: forceTwiggle.includes(this.facingType) || (this.facingType === "locksFacing" && this.control.alt),
+            twiggle: forceTwiggle.includes(this.facingType) || (this.facingType === "locksFacing" && this.control.alt) || this.forceTwiggle,
             layer: this.layerID ? this.layerID : this.bond != null ? this.bound.layer : this.type === "wall" ? 11 : this.type === "food" ? 10 : this.type === "tank" ? 5 : this.type === "crasher" ? 1 : 0,
             color: this.color,
             borderless: this.borderless,

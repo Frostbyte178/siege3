@@ -77,7 +77,6 @@ exports.minibossBase = {
         mob: 0,
     }),
     LEVEL: 45,
-    CONTROLLERS: ["nearestDifferentMaster", "canRepel"],
     FACING_TYPE: "autospin",
     HITS_OWN_TYPE: "hardOnlyBosses",
     BROADCAST_MESSAGE: "A visitor has left!",
@@ -85,12 +84,12 @@ exports.minibossBase = {
 }
 exports.miniboss = {
     PARENT: ["minibossBase"],
-    CONTROLLERS: ["minion"],
+    CONTROLLERS: ["nearestDifferentMaster", "minion", "canRepel"],
     AI: { NO_LEAD: true },
 };
 exports.ramMiniboss = {
     PARENT: ["minibossBase"],
-    CONTROLLERS: ["mapTargetToGoal"],
+    CONTROLLERS: ["nearestDifferentMaster", "canRepel", "mapTargetToGoal"],
 };
 
 // GUNS
