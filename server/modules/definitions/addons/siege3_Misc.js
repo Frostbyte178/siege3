@@ -258,4 +258,52 @@ module.exports = ({ Class }) => {
             },
         })
     }
+    Class.flameTurret = {
+        PARENT: ["genericTank"],
+        LABEL: "Flamethrower",
+        COLOR: 14,
+        INDEPENDENT: true,
+        GUNS: [
+            {
+                POSITION: [12, 11, 1.2, 3, 0, 0, 0],
+            }, {
+                POSITION: [12, 8, 1.25, 8, 0, 0, 0],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.mach, g.mach, {spray: 0.2, shudder: 0.1, speed: 3, maxSpeed: 3, range: 0.25, damage: 6, health: 2/5}]),
+                    TYPE: "growBullet",
+                    AUTOFIRE: true,
+                }
+            }
+        ],
+    };
+    Class.xPredatorTurret = {
+        PARENT: ["genericTank"],
+        LABEL: "Flamethrower",
+        CONTROLLERS: ["nearestDifferentMaster"],
+        COLOR: 14,
+        INDEPENDENT: true,
+        GUNS: [
+            {
+                POSITION: [24, 8, 1, 0, 0, 0, 0],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.sniper, g.hunter, g.hunter2, g.hunter2, g.preda, {reload: 0.85}]),
+                    TYPE: "bullet"
+                }
+            }, {
+                POSITION: [21, 11, 1, 0, 0, 0, 0.1],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.sniper, g.hunter, g.hunter2, g.preda, {reload: 0.85}]),
+                    TYPE: "bullet"
+                }
+            }, {
+                POSITION: [18, 14, 1, 0, 0, 0, 0.2],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.sniper, g.hunter, g.preda, {reload: 0.85}]),
+                    TYPE: "bullet"
+                }
+            }, {
+                POSITION: [10, 14, -1.25, 2, 0, 0, 0]
+            }
+        ],
+    };
 };

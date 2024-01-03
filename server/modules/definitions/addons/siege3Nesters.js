@@ -51,26 +51,6 @@ module.exports = ({ Class }) => {
         );
     };
 
-    Class.nestreactortrap = {
-        PARENT: ["genericTank"],
-        LABEL: "nest trapper",
-        GUNS: [
-            {
-                POSITION: [15, 7, 1, 0, 0, 0, 0],
-            },
-            {
-                POSITION: [3, 7, 1.7, 15, 0, 0, 0],
-                PROPERTIES: {
-                    SHOOT_SETTINGS: combineStats([g.trap]),
-                    AUTOFIRE: true,
-                    TYPE: "trap",
-                    STAT_CALCULATOR: gunCalcNames.trap,
-            
-                },
-            },
-        ],
-    };
-
     // Ok now it's Nester time.
 
     //Undertow Nester.
@@ -266,121 +246,43 @@ module.exports = ({ Class }) => {
         SHAPE: 5,
         SIZE: 50,
         BODY: {
-            FOV: 1.3,
-            SPEED: base.SPEED * 0.25,
+            FOV: 2.5,
+            SPEED: base.SPEED * 0.18,
             HEALTH: base.HEALTH * 9,
             SHIELD: base.SHIELD * 1.5,
-            REGEN: base.REGEN,
+            REGEN: base.REGEN * 0.7,
             DAMAGE: base.DAMAGE * 2.5,
         },
-        GUNS: [
-            {
-                POSITION: [3.5, 6.65, 1.2, 8, 0, 35, 0],
-                PROPERTIES: {
-                    SHOOT_SETTINGS: combineStats([g.drone, g.nest_keeper]),
-                    TYPE: "snake",
-                    AUTOFIRE: true,
-                    LABEL: "Mega Crasher",
-                },
-            },
-            {
-                POSITION: [3.5, 6.65, 1.2, 8, 0, -35, 0],
-                PROPERTIES: {
-                    SHOOT_SETTINGS: combineStats([g.drone, g.nest_keeper]),
-                    TYPE: "snake",
-                    AUTOFIRE: true,
-                    LABEL: "Mega Crasher",
-                },
-            },
-            {
-                POSITION: [3.5, 6.65, 1.2, 8, 0, 180, 0],
-                PROPERTIES: {
-                    SHOOT_SETTINGS: combineStats([g.drone, g.nest_keeper]),
-                    TYPE: "snake",
-                    AUTOFIRE: true,
-                    LABEL: "Mega Crasher",
-                },
-            },
-            {
-                POSITION: [3.5, 6.65, 1.2, 8, 0, 108, 0],
-                PROPERTIES: {
-                    SHOOT_SETTINGS: combineStats([g.drone, g.nest_keeper]),
-                    TYPE: "snake",
-                    AUTOFIRE: true,
-                    LABEL: "Mega Crasher",
-                },
-            },
-            {
-                POSITION: [3.5, 6.65, 1.2, 8, 0, -108, 0],
-                PROPERTIES: {
-                    SHOOT_SETTINGS: combineStats([g.drone, g.nest_keeper]),
-                    TYPE: "snake",
-                    AUTOFIRE: true,
-                    LABEL: "Mega Crasher",
-                },
-            },
-        ],
+        VALUE: 3e5,
+        GUNS: [],
         TURRETS: [
             {
-                POSITION: [8, 9, 0, 72, 120, 0],
-                TYPE: [
-                    "nestreactortrap",
-                    {
-                        INDEPENDENT: true,
-                        COLOR: 14,
-                    },
-                ],
-            },
-            {
-                POSITION: [8, 9, 0, 0, 120, 0],
-                TYPE: [
-                    "nestreactortrap",
-                    {
-                        INDEPENDENT: true,
-                        COLOR: 14,
-                    },
-                ],
-            },
-            {
-                POSITION: [8, 9, 0, 144, 120, 0],
-                TYPE: [
-                    "nestreactortrap",
-                    {
-                        INDEPENDENT: true,
-                        COLOR: 14,
-                    },
-                ],
-            },
-            {
-                POSITION: [8, 9, 0, 216, 120, 0],
-                TYPE: [
-                    "nestreactortrap",
-                    {
-                        INDEPENDENT: true,
-                        COLOR: 14,
-                    },
-                ],
-            },        {
-                POSITION: [8, 9, 0, -72, 120, 0],
-                TYPE: [
-                    "nestreactortrap",
-                    {
-                        INDEPENDENT: true,
-                        COLOR: 14,
-                    },
-                ],
-            },
-            {
                 POSITION: [9, 0, 0, 0, 360, 1],
-                TYPE:[ "predator",
-            {
-            COLOR: 14,
-            },
-        ],
-            },
+                TYPE: 'xPredatorTurret'
+            }
         ],
     };
-
+    for (let i = 0; i < 5; i++) {
+        Class.nestSynthesizer.GUNS.push(
+            {
+                POSITION: [10, 10, -0.5, 4, 0, 72 * (i + 0.5), 0],
+            }, {
+                POSITION: [12, 11, -1.3, 0, 0, 72 * (i + 0.5), 0],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.sniper, g.assass, g.hunter, g.arty, g.sidewind, {size: 0.55}]),
+                    TYPE: "snake",
+                    STAT_CALCULATOR: gunCalcNames.sustained,
+                    AUTOFIRE: true,
+                },
+            },
+        )
+        Class.nestSynthesizer.TURRETS.push(
+            {
+                POSITION: [8, 9, 0, i * 72, 0, 0],
+                TYPE: 'flameTurret',
+            },
+        )
+    }
 
     //Push Nester to Nesters.
     Class.nesters.UPGRADES_TIER_0.push("nestPurger", "nestGrenadier", "nestBrigadier", "nestIndustry", "nestSynthesizer");
