@@ -235,8 +235,7 @@ module.exports = ({ Class }) => {
     Class.nestIndustry.GUNS[10].PROPERTIES.TYPE = ["sentinelMinigun", {CLEAR_ON_MASTER_UPGRADE: true}],
     Class.nestIndustry.GUNS[13].PROPERTIES.TYPE = ["sentinelCrossbow", {CLEAR_ON_MASTER_UPGRADE: true}],
 
-    // Siece note, PLEASE REDO "NEST REACTOR" TO LOOK LIKE IT HAS PROPER SIDEWINDER BARRELS, THIS WAS TAKEN FROM AN OLDER ERA
-
+    // Long range nester
     Class.nestSynthesizer = {
         PARENT: ["miniboss"],
         LABEL: "Nest Synthesizer",
@@ -269,7 +268,7 @@ module.exports = ({ Class }) => {
             }, {
                 POSITION: [12, 11, -1.3, 0, 0, 72 * (i + 0.5), 0],
                 PROPERTIES: {
-                    SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.sniper, g.assass, g.hunter, g.arty, g.sidewind, {size: 0.55}]),
+                    SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.sniper, g.sniper, g.hunter, g.sidewind, {range: 2, size: 0.55}]),
                     TYPE: "snake",
                     STAT_CALCULATOR: gunCalcNames.sustained,
                     AUTOFIRE: true,
@@ -284,6 +283,61 @@ module.exports = ({ Class }) => {
         )
     }
 
+    // Brawler nester
+    Class.nestPurifier = {
+        PARENT: 'miniboss',
+        LABEL: "Nest Purifier",
+        UPGRADE_LABEL: "Nest Purifier",
+        UPGRADE_COLOR: 14,
+        COLOR: 14,
+        SHAPE: 5,
+        SIZE: 50,
+        BODY: {
+            FOV: 2.5,
+            SPEED: base.SPEED * 0.45,
+            HEALTH: base.HEALTH * 11,
+            SHIELD: base.SHIELD * 2.5,
+            REGEN: base.REGEN * 0.4,
+            DAMAGE: base.DAMAGE * 2.5,
+        },
+        VALUE: 3e5,
+        GUNS: [
+            {
+                POSITION: [0, 10, 1, 10, 0, 0, 0],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, {reload: 10, size: 2, speed: 0}]),
+                    TYPE: "shockwave",
+                    STAT_CALCULATOR: gunCalcNames.sustained,
+                    AUTOFIRE: true,
+                },
+            }
+        ],
+        TURRETS: [
+            {
+                POSITION: [9, 0, 0, 0, 360, 1],
+                TYPE: 'culverinTurret'
+            }
+        ],
+    }
+    for (let i = 0; i < 5; i++) {
+        Class.nestPurifier.GUNS.push(
+            {
+                POSITION: [13, 12, 0.45, 0, 0, 72 * (i + 0.5), 0],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, {reload: 10}, g.fake]),
+                    TYPE: "bullet",
+                    AUTOFIRE: true,
+                },
+            },
+        )
+        Class.nestPurifier.TURRETS.push(
+            {
+                POSITION: [8, 9, 0, i * 72, 0, 0],
+                TYPE: 'topplerTurret',
+            },
+        )
+    }
+
     //Push Nester to Nesters.
-    Class.nesters.UPGRADES_TIER_0.push("nestPurger", "nestGrenadier", "nestBrigadier", "nestIndustry", "nestSynthesizer");
+    Class.nesters.UPGRADES_TIER_0.push("nestPurger", "nestGrenadier", "nestBrigadier", "nestIndustry", "nestSynthesizer", 'nestPurifier');
 }

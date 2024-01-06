@@ -107,6 +107,21 @@ module.exports = ({ Class }) => {
             }
         })
     }
+    Class.shockwave = {
+        PARENT: 'bullet',
+        LABEL: 'Shockwave',
+        BODY: {
+            DENSITY: 1e10,
+            HEALTH: 1e6,
+            SHIELD: 1e6,
+            REGEN: 1e6,
+            RANGE: 15,
+            PENETRATION: 1e-3,
+        },
+        ALPHA: 0.5,
+        MOTION_TYPE: 'shockwave',
+        HITS_OWN_TYPE: 'hard',
+    }
 
     // Turrets
     Class.fireworkTurret = {
@@ -286,19 +301,19 @@ module.exports = ({ Class }) => {
             {
                 POSITION: [24, 8, 1, 0, 0, 0, 0],
                 PROPERTIES: {
-                    SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.sniper, g.hunter, g.hunter2, g.hunter2, g.preda, {reload: 0.85}]),
+                    SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.sniper, g.hunter, g.hunter2, g.hunter2, g.preda, {range: 2, reload: 0.85}]),
                     TYPE: "bullet"
                 }
             }, {
                 POSITION: [21, 11, 1, 0, 0, 0, 0.1],
                 PROPERTIES: {
-                    SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.sniper, g.hunter, g.hunter2, g.preda, {reload: 0.85}]),
+                    SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.sniper, g.hunter, g.hunter2, g.preda, {range: 2, reload: 0.85}]),
                     TYPE: "bullet"
                 }
             }, {
                 POSITION: [18, 14, 1, 0, 0, 0, 0.2],
                 PROPERTIES: {
-                    SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.sniper, g.hunter, g.preda, {reload: 0.85}]),
+                    SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.sniper, g.hunter, g.preda, {range: 2, reload: 0.85}]),
                     TYPE: "bullet"
                 }
             }, {
@@ -306,4 +321,106 @@ module.exports = ({ Class }) => {
             }
         ],
     };
+    Class.culverinTurret = {
+        PARENT: ["genericTank"],
+        LABEL: "Shotgun",
+        CONTROLLERS: ["nearestDifferentMaster"],
+        COLOR: 14,
+        INDEPENDENT: true,
+        GUNS: [
+            {
+                POSITION: [4, 3, 1, 11, -3, 0, 0],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.fast, g.shotgun]),
+                    TYPE: "bullet",
+                },
+            }, {
+                POSITION: [4, 3, 1, 11, 3, 0, 0],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.fast, g.shotgun]),
+                    TYPE: "bullet",
+                },
+            }, {
+                POSITION: [4, 4, 1, 13, 0, 0, 0],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.fast, g.shotgun]),
+                    TYPE: "casing",
+                },
+            }, {
+                POSITION: [1, 4, 1, 12, -1, 0, 0],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.fast, g.shotgun]),
+                    TYPE: "casing",
+                },
+            }, {
+                POSITION: [1, 4, 1, 11, 1, 0, 0],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.fast, g.shotgun]),
+                    TYPE: "casing",
+                },
+            }, {
+                POSITION: [1, 3, 1, 13, -1, 0, 0],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.fast, g.shotgun]),
+                    TYPE: "bullet",
+                },
+            }, {
+                POSITION: [1, 3, 1, 13, 1, 0, 0],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.fast, g.shotgun]),
+                    TYPE: "bullet",
+                },
+            }, {
+                POSITION: [1, 2, 1, 13, 2, 0, 0],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.fast, g.shotgun]),
+                    TYPE: "casing",
+                },
+            }, {
+                POSITION: [1, 2, 1, 13, -2, 0, 0],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.fast, g.shotgun]),
+                    TYPE: "casing",
+                },
+            }, {
+                POSITION: [17, 14, 1, 6, 0, 0, 0],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun, g.fake]),
+                    TYPE: "casing",
+                },
+            }, {
+                POSITION: [8, 14, -1.3, 4, 0, 0, 0],
+            },
+        ],
+    };
+    Class.topplerTurret = {
+        PARENT: 'genericTank',
+        COLOR: 14,
+        INDEPENDENT: true,
+        CONTROLLERS: ['nearestDifferentMaster'],
+        GUNS: [
+            {
+                POSITION: [20, 14, 1, 0, 0, 0, 0],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.destroy, g.mini, {reload: 1.15}]),
+                    TYPE: "bullet",
+                    AUTOFIRE: true,
+                }
+            }, {
+                POSITION: [18, 14, 1, 0, 0, 0, 0.15],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.destroy, g.mini, {reload: 1.15}]),
+                    TYPE: "bullet",
+                    AUTOFIRE: true,
+                }
+            }, {
+                POSITION: [16, 14, 1, 0, 0, 0, 0.3],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.destroy, g.mini, {reload: 1.15}]),
+                    TYPE: "bullet",
+                    AUTOFIRE: true,
+                }
+            }
+        ]
+    }
 };
