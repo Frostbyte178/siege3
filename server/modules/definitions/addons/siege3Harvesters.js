@@ -32,34 +32,39 @@ module.exports = ({ Class }) => {
     Class.furrower = {
         PARENT: "genericHarvester",
         LABEL: "Furrower",
+        CONTROLLERS: ["nearestDifferentMaster", "bombingRun"],
         BODY: {
             HEALTH: harvesterStats.HEALTH * 0.7,
             SPEED: harvesterStats.SPEED * 1.75,
         },
+        AI: {IGNORE_SHAPES: true, chase: true},
         GUNS: [
             { // Bomb launchers
-                POSITION: [5, 5, 1, 9, 6, 20, 0],
+                POSITION: [5, 5, 1, 8.5, 7, 12, 0],
             }, {
-                POSITION: [10, 6.5, 1.4, 2, 6, 20, 0.1],
+                POSITION: [10, 6.5, 1.4, 1.5, 7, 12, 0],
                 PROPERTIES: {
-                    SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.launcher, {range: 0.5, speed: 2, maxSpeed: 0.25, size: 1.2, reload: 2.2/1.5, damage: 0.6, recoil: 0.15}]),
+                    SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.launcher, {range: 0.4, speed: 2, maxSpeed: 0.4, size: 1.2, reload: 2.2, damage: 0.55, recoil: 0.15}]),
                     TYPE: "trueBomb",
                     STAT_CALCULATOR: gunCalcNames.sustained,
+                    ALT_FIRE: true,
                 },
             }, {
-                POSITION: [5, 5, 1, 9, -6, -20, 0],
+                POSITION: [5, 5, 1, 8.5, -7, -12, 0],
             }, {
-                POSITION: [10, 6.5, 1.4, 2, -6, -20, 0.1],
+                POSITION: [10, 6.5, 1.4, 1.5, -7, -12, 0],
                 PROPERTIES: {
-                    SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.launcher, {range: 0.5, speed: 2, maxSpeed: 0.25, size: 1.2, reload: 2.2/1.5, damage: 0.6, recoil: 0.15}]),
+                    SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.launcher, {range: 0.4, speed: 2, maxSpeed: 0.4, size: 1.2, reload: 2.2, damage: 0.55, recoil: 0.15}]),
                     TYPE: "trueBomb",
                     STAT_CALCULATOR: gunCalcNames.sustained,
+                    ALT_FIRE: true,
                 },
             }, { // Destroyer
-                POSITION: [18, 9.5, 1, 0, 0, 0, 0.1],
+                POSITION: [18, 9.5, 1, 0, 0, 0, 0],
                 PROPERTIES: {
-                    SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.destroy, {speed: 1.6, maxSpeed: 1.3, health: 0.7, recoil: 0.15}]),
+                    SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.destroy, {speed: 1.6, maxSpeed: 1.3, health: 0.7, reload: 1.5, recoil: 0.15}]),
                     TYPE: "bullet",
+                    ALT_FIRE: true,
                 },
             }, { // Thruster
                 POSITION: [8.5, 17, 0.7, 4, 0, 180, 0],
@@ -80,7 +85,7 @@ module.exports = ({ Class }) => {
     }
 
     // Circler with bombs
-    Class.purifierTurret = {
+    Class.pressurizerTurret = {
         PARENT: "genericTank",
         CONTROLLERS: ["nearestDifferentMaster"],
         INDEPENDENT: true,
@@ -92,14 +97,14 @@ module.exports = ({ Class }) => {
             }, {
                 POSITION: [13, 12.5, 1.4, 5, 0, 0, 0.1],
                 PROPERTIES: {
-                    SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.launcher, {range: 0.8, speed: 2.5, maxSpeed: 0.35, size: 1.4, reload: 1.8, damage: 0.6, recoil: 0.15}]),
+                    SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.launcher, {range: 0.65, speed: 2.5, maxSpeed: 0.55, size: 1.4, reload: 1.8, damage: 0.8, recoil: 0.15}]),
                     TYPE: "trueBomb",
                     STAT_CALCULATOR: gunCalcNames.sustained,
                 },
             }, 
         ]
     }
-    Class.purifier = {
+    Class.pressurizer = {
         PARENT: "genericHarvester",
         LABEL: "Purifier",
         CONTROLLERS: ["nearestDifferentMaster", "circleTarget"],
@@ -147,7 +152,7 @@ module.exports = ({ Class }) => {
                 TYPE: ["hexagon", {COLOR: -1, MIRROR_MASTER_ANGLE: true}]
             }, {
                 POSITION: [12, 0, 0, 0, 360, 1],
-                TYPE: "purifierTurret"
+                TYPE: "pressurizerTurret"
             }
         ]
     }
@@ -162,7 +167,7 @@ module.exports = ({ Class }) => {
             POSITION: [15, 0, 0, 180, 360, 1],
             TYPE: ["hexagon", {COLOR: -1, MIRROR_MASTER_ANGLE: true}]
         }],
-        UPGRADES_TIER_0: ["furrower", "purifier"],
+        UPGRADES_TIER_0: ["furrower", "pressurizer"],
     }
 
     Class.bosses.UPGRADES_TIER_0.push("harvesters")

@@ -592,6 +592,51 @@ class io_circleTarget extends IO {
         }
     }
 }
+class io_bombingRun extends IO {
+    constructor(body, opts = {}) {
+        super(body);
+        this.goAgainRange = opts.goAgainRange ?? 1200;
+        this.breakAwayRange = opts.breakAwayRange ?? 350;
+        this.firingRange = opts.firingRange ?? 400;
+        // this.maxBreakAwayTime = opts.maxBreakAwayTime ?? 8;
+        this.currentlyBombing = true;
+        this.dodgeDirection = 0;
+        this.storedAngle = 0;
+        // this.lastBreakAwayTime = Date.now();
+    }
+    think(input) {
+        if (input.target != null) {
+            let target = new Vector(input.target.x, input.target.y);
+            // Set status
+            if (target.length < this.breakAwayRange) this.currentlyBombing = false;
+            if (target.length > this.goAgainRange) this.currentlyBombing = true;
+
+            let goal, newX = target.x, newY = target.y;
+            if (this.currentlyBombing) {
+                goal = {
+                    x: target.x + this.body.x,
+                    y: target.y + this.body.y,
+                };
+                this.storedAngle = this.body.facing;
+                this.dodgeDirection = Math.PI / 4 * (ran.random(1) < 0.5 ? 1 : -1);
+            } else {
+                let exitAngle = this.storedAngle + this.dodgeDirection;
+                newX = target.x + this.goAgainRange * Math.cos(exitAngle);
+                newY = target.y + this.goAgainRange * Math.sin(exitAngle);
+                goal = {
+                    x: newX + this.body.x,
+                    y: newY + this.body.y,
+                };
+            }
+            
+            return {
+                goal,
+                target: new Vector(newX, newY),
+                alt: this.currentlyBombing && target.length < this.firingRange,
+            }
+        }
+    }
+}
 class io_hangOutNearMaster extends IO {
     constructor(body) {
         super(body)
@@ -754,6 +799,7 @@ let ioTypes = {
     fleeAtLowHealth: io_fleeAtLowHealth,
     wanderAroundMap: io_wanderAroundMap,
     circleTarget: io_circleTarget,
+    bombingRun: io_bombingRun,
 };
 
 module.exports = { ioTypes, IO };
