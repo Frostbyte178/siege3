@@ -4,8 +4,8 @@ const g = require('../gunvals.js');
 
 const harvesterStats = {
     FOV: 2,
-    SPEED: 0.7 * base.SPEED,
-    HEALTH: 4.5 * base.HEALTH,
+    SPEED: 0.45 * base.SPEED,
+    HEALTH: 4 * base.HEALTH,
     DAMAGE: 1.75 * base.DAMAGE,
     SHIELD: 1.5 * base.SHIELD,
     // Elite stats for reference:
@@ -14,6 +14,22 @@ const harvesterStats = {
     // HEALTH: 7 * base.HEALTH,
     // DAMAGE: 2.5 * base.DAMAGE,
 };
+
+function addThruster(recoilFactor = 4) {
+    return [
+        {
+            POSITION: [12.5, 14, -0.5, 3, 0, 180, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.flank, g.tri, g.thruster, {reload: 0.5, recoil: recoilFactor, size: 0.45}]),
+                TYPE: "bullet",
+            },
+        }, {
+            POSITION: [9, 8.5, 0.001, 6, 1.5, -152, 0],
+        }, {
+            POSITION: [9, 8.5, 0.001, 6, -1.5, 152, 0],
+        }
+    ]
+}
 
 module.exports = ({ Class }) => {
     Class.genericHarvester = {
@@ -66,15 +82,8 @@ module.exports = ({ Class }) => {
                     TYPE: "bullet",
                     ALT_FIRE: true,
                 },
-            }, { // Thruster
-                POSITION: [8.5, 17, 0.7, 4, 0, 180, 0],
-            }, {
-                POSITION: [14.5, 14, -0.5, 3, 0, 180, 0],
-                PROPERTIES: {
-                    SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.flank, g.tri, g.thruster, {reload: 0.5, recoil: 2.2, size: 0.45}]),
-                    TYPE: "bullet",
-                },
-            }
+            },
+            ...addThruster(4),
         ],
         TURRETS: [
             {
@@ -136,15 +145,8 @@ module.exports = ({ Class }) => {
                     STAT_CALCULATOR: gunCalcNames.trap,
                     AUTOFIRE: true,
                 }
-            }, { // Thruster
-                POSITION: [8.5, 17, 0.7, 4, 0, 180, 0],
-            }, {
-                POSITION: [14.5, 14, -0.5, 3, 0, 180, 0],
-                PROPERTIES: {
-                    SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.flank, g.tri, g.thruster, {reload: 0.5, recoil: 2.2, size: 0.45}]),
-                    TYPE: "bullet",
-                },
-            }
+            },
+            ...addThruster(3.5),
         ],
         TURRETS: [
             {
