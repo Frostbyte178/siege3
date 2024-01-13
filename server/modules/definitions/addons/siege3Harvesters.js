@@ -115,7 +115,7 @@ module.exports = ({ Class }) => {
     }
     Class.pressurizer = {
         PARENT: "genericHarvester",
-        LABEL: "Purifier",
+        LABEL: "Pressurizer",
         CONTROLLERS: ["nearestDifferentMaster", "circleTarget"],
         BODY: {
             HEALTH: harvesterStats.HEALTH * 0.8e80,
