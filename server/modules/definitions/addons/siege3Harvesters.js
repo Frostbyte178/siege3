@@ -118,7 +118,7 @@ module.exports = ({ Class }) => {
         LABEL: "Pressurizer",
         CONTROLLERS: ["nearestDifferentMaster", "circleTarget"],
         BODY: {
-            HEALTH: harvesterStats.HEALTH * 0.8e80,
+            HEALTH: harvesterStats.HEALTH * 0.8,
             SPEED: harvesterStats.SPEED * 1.5,
             SHIELD: harvesterStats.SHIELD * 1.3,
         },
@@ -159,6 +159,61 @@ module.exports = ({ Class }) => {
         ]
     }
 
+    // Wall maker
+    Class.stockyard = {
+        PARENT: "genericHarvester",
+        LABEL: "Stockyard",
+        CONTROLLERS: ["nearestDifferentMaster", ["bombingRun", {breakAwayAngle: 10, alwaysFireInRange: true}]],
+        BODY: {
+            HEALTH: harvesterStats.HEALTH * 0.75,
+            SPEED: harvesterStats.SPEED * 1.6,
+            SHIELD: harvesterStats.SHIELD * 1.3,
+        },
+        GUNS: [
+            { // Shockwave
+                POSITION: [13, 7, 0.001, 3, 5, 0, 0],
+            }, {
+                POSITION: [13, 7, 0.001, 3, -5, 0, 0],
+            }, {
+                POSITION: [13, 10, -0.4, 3, 0, 0, 0],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.mach, g.mach, {speed: 0.25, health: 2, density: 3, spray: 0.5, size: 0.5, shudder: 0.1}]),
+                    TYPE: "bullet",
+                }
+            },
+            { // Thrusters
+                POSITION: [12.5, 7.5, -0.5, 1, -5, 165, 0],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.flank, g.tri, g.thruster, {reload: 0.5, recoil: 1.8, size: 0.8}]),
+                    TYPE: "bullet",
+                },
+            }, {
+                POSITION: [12.5, 7.5, -0.5, 1, 5, -165, 0],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.flank, g.tri, g.thruster, {reload: 0.5, recoil: 1.8, size: 0.8}]),
+                    TYPE: "bullet",
+                },
+            },
+            { // Block layer
+                POSITION: [13.5, 10, -0.4, 0, 0, 180, 0]
+            }, {
+                POSITION: [1.5, 10, 1.3, 13.5, 0, 180, 0],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.trap, g.block, g.mach, g.mach, {health: 1.85, reload: 0.55, spray: 0.3}]),
+                    TYPE: "unsetTrap",
+                    STAT_CALCULATOR: gunCalcNames.block,
+                    ALT_FIRE: true,
+                }
+            },
+        ],
+        TURRETS: [
+            {
+                POSITION: [13, 0, 0, 180, 360, 1],
+                TYPE: ["hexagon", {COLOR: -1, MIRROR_MASTER_ANGLE: true}]
+            }
+        ]
+    }
+
     Class.harvesters = {
         PARENT: ["menu"],
         LABEL: "Harvesters",
@@ -169,8 +224,8 @@ module.exports = ({ Class }) => {
             POSITION: [15, 0, 0, 180, 360, 1],
             TYPE: ["hexagon", {COLOR: -1, MIRROR_MASTER_ANGLE: true}]
         }],
-        UPGRADES_TIER_0: ["furrower", "pressurizer"],
+        UPGRADES_TIER_0: ["furrower", "pressurizer", "stockyard"],
     }
 
-    Class.bosses.UPGRADES_TIER_0.push("harvesters")
+    Class.bosses.UPGRADES_TIER_0.push("harvesters");
 }

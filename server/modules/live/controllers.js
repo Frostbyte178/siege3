@@ -598,11 +598,14 @@ class io_bombingRun extends IO {
         this.goAgainRange = opts.goAgainRange ?? 1200;
         this.breakAwayRange = opts.breakAwayRange ?? 350;
         this.firingRange = opts.firingRange ?? 400;
+        this.breakAwayAngle = opts.breakAwayAngle ?? 45;
+        this.alwaysFireInRange = opts.alwaysFireInRange ?? false;
         // this.maxBreakAwayTime = opts.maxBreakAwayTime ?? 8;
         this.currentlyBombing = true;
         this.dodgeDirection = 0;
         this.storedAngle = 0;
         // this.lastBreakAwayTime = Date.now();
+        this.breakAwayAngle *= Math.PI / 180;
     }
     think(input) {
         if (input.target != null) {
@@ -618,7 +621,7 @@ class io_bombingRun extends IO {
                     y: target.y + this.body.y,
                 };
                 this.storedAngle = this.body.facing;
-                this.dodgeDirection = Math.PI / 4 * (ran.random(1) < 0.5 ? 1 : -1);
+                this.dodgeDirection = this.breakAwayAngle * (ran.random(1) < 0.5 ? 1 : -1);
             } else {
                 let exitAngle = this.storedAngle + this.dodgeDirection;
                 newX = target.x + this.goAgainRange * Math.cos(exitAngle);
@@ -632,7 +635,7 @@ class io_bombingRun extends IO {
             return {
                 goal,
                 target: new Vector(newX, newY),
-                alt: this.currentlyBombing && target.length < this.firingRange,
+                alt: (this.alwaysFireInRange || this.currentlyBombing) && target.length < this.firingRange,
             }
         }
     }
