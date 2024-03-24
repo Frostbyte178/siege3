@@ -563,83 +563,6 @@ class io_minion extends IO {
         }
     }
 }
-class io_circleTarget extends IO {
-    constructor(body, opts = {}) {
-        super(body);
-        this.orbitRange = opts.range ?? 400;
-        this.turnwise = opts.turnwise ?? 1;
-    }
-    think(input) {
-        if (input.target != null) {
-            let target = new Vector(input.target.x, input.target.y);
-            // Set target
-            let distanceToRange = target.length - this.orbitRange,
-                targetBearing = util.clamp(distanceToRange / 200, -Math.PI / 2, Math.PI / 2) - Math.PI / 2 * this.turnwise,
-                targetAngle = targetBearing + target.direction,
-                newX = target.length * Math.cos(targetAngle),
-                newY = target.length * Math.sin(targetAngle);
-            // Set goal
-            let dir = this.turnwise * target.direction + 0.05;
-            let goal = {
-                x: this.body.x + target.x - this.orbitRange * Math.cos(dir),
-                y: this.body.y + target.y - this.orbitRange * Math.sin(dir),
-            }
-            
-            return {
-                goal,
-                target: new Vector(newX, newY),
-            }
-        }
-    }
-}
-class io_bombingRun extends IO {
-    constructor(body, opts = {}) {
-        super(body);
-        this.goAgainRange = opts.goAgainRange ?? 1200;
-        this.breakAwayRange = opts.breakAwayRange ?? 350;
-        this.firingRange = opts.firingRange ?? 400;
-        this.breakAwayAngle = opts.breakAwayAngle ?? 45;
-        this.alwaysFireInRange = opts.alwaysFireInRange ?? false;
-        // this.maxBreakAwayTime = opts.maxBreakAwayTime ?? 8;
-        this.currentlyBombing = true;
-        this.dodgeDirection = 0;
-        this.storedAngle = 0;
-        // this.lastBreakAwayTime = Date.now();
-        this.breakAwayAngle *= Math.PI / 180;
-    }
-    think(input) {
-        if (input.target != null) {
-            let target = new Vector(input.target.x, input.target.y);
-            // Set status
-            if (target.length < this.breakAwayRange) this.currentlyBombing = false;
-            if (target.length > this.goAgainRange) this.currentlyBombing = true;
-
-            let goal, newX = target.x, newY = target.y;
-            if (this.currentlyBombing) {
-                goal = {
-                    x: target.x + this.body.x,
-                    y: target.y + this.body.y,
-                };
-                this.storedAngle = this.body.facing;
-                this.dodgeDirection = this.breakAwayAngle * (ran.random(1) < 0.5 ? 1 : -1);
-            } else {
-                let exitAngle = this.storedAngle + this.dodgeDirection;
-                newX = target.x + this.goAgainRange * Math.cos(exitAngle);
-                newY = target.y + this.goAgainRange * Math.sin(exitAngle);
-                goal = {
-                    x: newX + this.body.x,
-                    y: newY + this.body.y,
-                };
-            }
-            
-            return {
-                goal,
-                target: new Vector(newX, newY),
-                alt: (this.alwaysFireInRange || this.currentlyBombing) && target.length < this.firingRange,
-            }
-        }
-    }
-}
 class io_hangOutNearMaster extends IO {
     constructor(body) {
         super(body)
@@ -801,8 +724,6 @@ let ioTypes = {
     hangOutNearMaster: io_hangOutNearMaster,
     fleeAtLowHealth: io_fleeAtLowHealth,
     wanderAroundMap: io_wanderAroundMap,
-    circleTarget: io_circleTarget,
-    bombingRun: io_bombingRun,
 };
 
 module.exports = { ioTypes, IO };

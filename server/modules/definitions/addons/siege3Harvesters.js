@@ -39,7 +39,7 @@ module.exports = ({ Class }) => {
         SHAPE: 6,
         COLOR: 0,
         SIZE: 22,
-        VALUE: 25e4,
+        VALUE: 3e5,
         FORCE_TWIGGLE: true,
         AI: {IGNORE_SHAPES: true},
     }
@@ -53,7 +53,7 @@ module.exports = ({ Class }) => {
             HEALTH: harvesterStats.HEALTH * 0.7,
             SPEED: harvesterStats.SPEED * 1.75,
         },
-        AI: {IGNORE_SHAPES: true, chase: true},
+        AI: {IGNORE_SHAPES: true, BLIND: true, chase: true},
         GUNS: [
             { // Bomb launchers
                 POSITION: [5, 5, 1, 8.5, 7, 12, 0],
@@ -99,7 +99,7 @@ module.exports = ({ Class }) => {
         CONTROLLERS: ["nearestDifferentMaster"],
         INDEPENDENT: true,
         BODY: {FOV: 15},
-        AI: {IGNORE_SHAPES: true, BLIND: true},
+        AI: {IGNORE_SHAPES: true, SKYNET: true, chase: true},
         GUNS: [
             {
                 POSITION: [12, 9, 1, 9, 0, 0, 0],
@@ -122,6 +122,7 @@ module.exports = ({ Class }) => {
             SPEED: harvesterStats.SPEED * 1.5,
             SHIELD: harvesterStats.SHIELD * 1.3,
         },
+        AI: {IGNORE_SHAPES: true, SKYNET: true, chase: true},
         GUNS: [
             {
                 POSITION: [13, 12, 0.001, 6, 0, 0, 0],
@@ -169,6 +170,7 @@ module.exports = ({ Class }) => {
             SPEED: harvesterStats.SPEED * 1.6,
             SHIELD: harvesterStats.SHIELD * 1.3,
         },
+        AI: {IGNORE_SHAPES: true, SKYNET: true, chase: true},
         GUNS: [
             { // Shockwave
                 POSITION: [13, 7, 0.001, 3, 5, 0, 0],
@@ -214,6 +216,78 @@ module.exports = ({ Class }) => {
         ]
     }
 
+    // MIRV
+    Class.irrigator = {
+        PARENT: "genericHarvester",
+        LABEL: "Irrigator",
+        CONTROLLERS: ["nearestDifferentMaster", ["drag", {range: 1600}]],
+        BODY: {
+            HEALTH: harvesterStats.HEALTH * 1.5,
+            SPEED: harvesterStats.SPEED * 0.7,
+            SHIELD: harvesterStats.SHIELD * 1.7,
+            FOV: harvesterStats.FOV * 1.6,
+        },
+        AI: {IGNORE_SHAPES: true, SKYNET: true},
+        GUNS: [
+            { // BR Missile
+                POSITION: [9, 6.5, -0.7, 7, 2, 60, 0.12],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.launcher, g.rocketeer, {speed: 8, maxSpeed: 2, damage: 0.25, size: 0.7, range: 1.25, reload: 2.5}]),
+                    TYPE: "homingMissile",
+                    STAT_CALCULATOR: gunCalcNames.sustained,
+                    ALT_FIRE: true,
+                },
+            }, {
+                POSITION: [17, 10.5, 0.65, -3, 2, 60, 0],
+            }, {
+                POSITION: [13.5, 7, -0.55, -3, 2, 60, 0],
+            }, { // BL Missile
+                POSITION: [9, 6.5, -0.7, 7, -2, -60, 0.12],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.launcher, g.rocketeer, {speed: 8, maxSpeed: 2, damage: 0.25, size: 0.7, range: 1.25, reload: 2.5}]),
+                    TYPE: "homingMissile",
+                    STAT_CALCULATOR: gunCalcNames.sustained,
+                    ALT_FIRE: true,
+                },
+            }, {
+                POSITION: [17, 10.5, 0.65, -3, -2, -60, 0],
+            }, {
+                POSITION: [13.5, 7, -0.55, -3, -2, -60, 0],
+            }, { // FR Missile
+                POSITION: [9, 6.5, -0.7, 8.5, 1, 30, 0],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.launcher, g.rocketeer, {speed: 8, maxSpeed: 2, damage: 0.25, size: 0.7, range: 1.25, reload: 2.5}]),
+                    TYPE: "homingMissile",
+                    STAT_CALCULATOR: gunCalcNames.sustained,
+                    ALT_FIRE: true,
+                },
+            }, {
+                POSITION: [17, 10.5, 0.65, -1.5, 1, 30, 0],
+            }, {
+                POSITION: [13.5, 7, -0.55, -1.5, 1, 30, 0],
+            }, { // FL Missile
+                POSITION: [9, 6.5, -0.7, 8.5, -1, -30, 0],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.launcher, g.rocketeer, {speed: 8, maxSpeed: 2, damage: 0.25, size: 0.7, range: 1.25, reload: 2.5}]),
+                    TYPE: "homingMissile",
+                    STAT_CALCULATOR: gunCalcNames.sustained,
+                    ALT_FIRE: true,
+                },
+            }, {
+                POSITION: [17, 10.5, 0.65, -1.5, -1, -30, 0],
+            }, {
+                POSITION: [13.5, 7, -0.55, -1.5, -1, -30, 0],
+            }, 
+            ...addThruster(2.6)
+        ],
+        TURRETS: [
+            {
+                POSITION: [13, 0, 0, 180, 360, 1],
+                TYPE: ["hexagon", {COLOR: -1, MIRROR_MASTER_ANGLE: true}]
+            }
+        ]
+    }
+
     Class.harvesters = {
         PARENT: ["menu"],
         LABEL: "Harvesters",
@@ -224,7 +298,7 @@ module.exports = ({ Class }) => {
             POSITION: [15, 0, 0, 180, 360, 1],
             TYPE: ["hexagon", {COLOR: -1, MIRROR_MASTER_ANGLE: true}]
         }],
-        UPGRADES_TIER_0: ["furrower", "pressurizer", "stockyard"],
+        UPGRADES_TIER_0: ["furrower", "pressurizer", "stockyard", "irrigator"],
     }
 
     Class.bosses.UPGRADES_TIER_0.push("harvesters");

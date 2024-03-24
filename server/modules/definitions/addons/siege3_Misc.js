@@ -2,6 +2,129 @@ const { combineStats, makeAuto } = require('../facilitators.js');
 const { base, gunCalcNames } = require('../constants.js');
 const g = require('../gunvals.js');
 
+// Controllers
+class io_circleTarget extends IO {
+    constructor(body, opts = {}) {
+        super(body);
+        this.orbitRange = opts.range ?? 400;
+        this.turnwise = opts.turnwise ?? 1;
+    }
+    think(input) {
+        if (input.target != null) {
+            let target = new Vector(input.target.x, input.target.y);
+            // Set target
+            let distanceToRange = target.length - this.orbitRange,
+                targetBearing = util.clamp(distanceToRange / 200, -Math.PI / 2, Math.PI / 2) - Math.PI / 2 * this.turnwise,
+                targetAngle = targetBearing + target.direction,
+                newX = target.length * Math.cos(targetAngle),
+                newY = target.length * Math.sin(targetAngle);
+            // Set goal
+            let dir = this.turnwise * target.direction + 0.05;
+            let goal = {
+                x: this.body.x + target.x - this.orbitRange * Math.cos(dir),
+                y: this.body.y + target.y - this.orbitRange * Math.sin(dir),
+            }
+            
+            return {
+                goal,
+                target: new Vector(newX, newY),
+            }
+        }
+    }
+}
+ioTypes.circleTarget = io_circleTarget;
+
+class io_bombingRun extends IO {
+    constructor(body, opts = {}) {
+        super(body);
+        this.goAgainRange = opts.goAgainRange ?? 1200;
+        this.breakAwayRange = opts.breakAwayRange ?? 350;
+        this.firingRange = opts.firingRange ?? 400;
+        this.breakAwayAngle = opts.breakAwayAngle ?? 45;
+        this.alwaysFireInRange = opts.alwaysFireInRange ?? false;
+        // If we should continue to do bombing runs below 15% health
+        this.bombAtLowHealth = opts.bombAtLowHealth ?? false;
+        // this.maxBreakAwayTime = opts.maxBreakAwayTime ?? 8;
+        this.currentlyBombing = true;
+        this.dodgeDirection = 0;
+        this.storedAngle = 0;
+        // this.lastBreakAwayTime = Date.now();
+        this.breakAwayAngle *= Math.PI / 180;
+    }
+    think(input) {
+        if (input.target != null) {
+            let target = new Vector(input.target.x, input.target.y);
+            // Set status
+            if (target.length < this.breakAwayRange) this.currentlyBombing = false;
+            if (target.length > this.goAgainRange && (this.bombAtLowHealth || this.body.health.display() > 0.15)) this.currentlyBombing = true;
+
+            let goal, 
+                newX = target.x, 
+                newY = target.y;
+            if (this.currentlyBombing) {
+                goal = {
+                    x: target.x + this.body.x,
+                    y: target.y + this.body.y,
+                };
+                this.storedAngle = this.body.facing;
+                this.dodgeDirection = this.breakAwayAngle * (ran.random(1) < 0.5 ? 1 : -1);
+            } else {
+                let exitAngle = this.storedAngle + this.dodgeDirection;
+                newX = target.x + this.goAgainRange * Math.cos(exitAngle);
+                newY = target.y + this.goAgainRange * Math.sin(exitAngle);
+                goal = {
+                    x: newX + this.body.x,
+                    y: newY + this.body.y,
+                };
+                // Avoid twitching when at the turnaround range
+                if ((goal.x ** 2 + goal.y ** 2) < 400) {
+                    newX = target.x;
+                    newY = target.y;
+                }
+            }
+            
+            return {
+                goal,
+                target: new Vector(newX, newY),
+                alt: (this.alwaysFireInRange || this.currentlyBombing) && target.length < this.firingRange,
+            }
+        }
+    }
+}
+ioTypes.bombingRun = io_bombingRun;
+
+class io_drag extends IO {
+    constructor(body, opts = {}) {
+        super(body);
+        this.idealRange = opts.range ?? 140;
+    }
+    think(input) {
+        if (input.target != null && input.main) {
+            let sizeFactor = Math.sqrt(this.body.master.size / this.body.master.SIZE),
+                orbit = this.idealRange * sizeFactor,
+                goal,
+                power = 1,
+                target = new Vector(input.target.x, input.target.y);
+            if (input.main) {
+                // Sit at range from point
+                let dir = target.direction;
+                goal = {
+                    x: this.body.x + target.x - orbit * Math.cos(dir),
+                    y: this.body.y + target.y - orbit * Math.sin(dir),
+                }
+                if (Math.abs(target.length - orbit) < this.body.size * 2) {
+                    power = 0.7
+                }
+            }
+            return {
+                goal: goal,
+                power: power,
+            }
+        }
+    }
+}
+ioTypes.drag = io_drag;
+
 module.exports = ({ Class }) => {
     // Projectiles
     Class.trueBomb = {
