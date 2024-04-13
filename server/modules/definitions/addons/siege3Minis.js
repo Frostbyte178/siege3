@@ -87,10 +87,10 @@ Class.siege3sentries = {
     UPGRADE_COLOR: "pink",
     GUNS: [
         {
-            POSITION: [14, 12, 1, 0, 0, 180, 0],
+            POSITION: [13.5, 12, 1, 0, 0, 180, 0],
         },
         {
-            POSITION: [4, 12, 1.8, 12, 0, 180, 0],
+            POSITION: [4, 12, 1.8, 13.5, 0, 180, 0],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.mach, g.trap, g.lowpower, g.halfspeed, g.halfspeed]),
                 TYPE: "trap",
@@ -126,25 +126,25 @@ Class.sentinelTriplex = {
         {
             POSITION: [21.5, 8, 0.7, 0, 0, 0, 0],
             PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([g.basic, g.halfrecoil]),
+                SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.twin, g.bent]),
                 TYPE: "bullet",
             },
         },{
             POSITION: [20, 8, 0.7, 0, 0, 0, 0.5],
             PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([g.basic, g.halfrecoil]),
+                SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.twin, g.bent]),
                 TYPE: "bullet",
             },
         },{
             POSITION: [19, 8, 0.7, 0, 0, 30, 0],
             PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([g.basic]),
+                SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.bent]),
                 TYPE: "bullet",
             },
         },{
             POSITION: [19, 8, 0.7, 0, 0, -30, 0],
             PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([g.basic]),
+                SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.bent]),
                 TYPE: "bullet",
             },
         },{
@@ -152,9 +152,9 @@ Class.sentinelTriplex = {
         },{
             POSITION: [3.75, 10, 2.125, 0, 4.25, -32, 0],
         },{
-            POSITION: [7, 5, 0.5, 9.5, 0, 15.5, 0],
+            POSITION: [7, 5, 0.2, 9.5, 0, 15.5, 0],
         },{
-            POSITION: [7, 5, 0.5, 9.5, 0, -15.5, 0],
+            POSITION: [7, 5, 0.2, 9.5, 0, -15.5, 0],
         },{
             POSITION: [7, 21, 0.5, 4.5, 0, 0, 0],
         },
@@ -167,7 +167,7 @@ Class.sentinelBees = {
   UPGRADE_COLOR: "purple",
   GUNS: [
         {
-            POSITION: [13, 5, 1.5, 0, -4, -1, 0.25],
+            POSITION: [13, 5, 1.5, 0, -4.5, -1, 0.25],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.swarm, g.bees]),
                 TYPE: ["bee", { INDEPENDENT: true }],
@@ -178,7 +178,7 @@ Class.sentinelBees = {
             },
         },
         {
-            POSITION: [13, 5, 1.5, 0, 4, 1, 0.75],
+            POSITION: [13, 5, 1.5, 0, 4.5, 1, 0.75],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.swarm, g.bees]),
                 TYPE: ["bee", { INDEPENDENT: true }],
@@ -188,9 +188,9 @@ Class.sentinelBees = {
                 LABEL: "Secondary",
             },
         },{
-            POSITION: [7, 19, .7, 4, 0, 0, 0],
+            POSITION: [7, 20, 0.85, 4, 0, 0, 0],
         },{
-            POSITION: [21, 9, 1.1, 0, 0, 0, 0],
+            POSITION: [19, 9, 1.1, 0, 0, 0, 0],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.arty]),
                 TYPE: "bullet",
@@ -208,13 +208,12 @@ Class.sentinelBomber = {
   UPGRADE_COLOR: "purple",
   GUNS: [
 	{
-            POSITION: [18, 5, 1.3, 0, 0, 0, 0],
+            POSITION: [18, 7, 1.3, 0, 0, 0, 0],
         },{
-      	    POSITION: [16, 14, 1.3, 0, 0, 0, 0.2],
+      	    POSITION: [15, 12.5, 1.3, 0, 0, 0, 0],
             PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.arty, g.lessreload, g.halfspeed]),
-                TYPE: "fireworkRocket",
-                LABEL: "Heavy",
+                SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.arty, g.lessreload, {range: 0.8}]),
+                TYPE: "trueBomb",
             },
     },
   ],
