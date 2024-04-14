@@ -27,7 +27,7 @@ class io_circleTarget extends IO {
             
             return {
                 goal,
-                target: new Vector(newX, newY),
+                target: {x: newX, y: newY},
             }
         }
     }
@@ -85,7 +85,7 @@ class io_bombingRun extends IO {
             
             return {
                 goal,
-                target: new Vector(newX, newY),
+                target: {x: newX, y: newY},
                 alt: (this.alwaysFireInRange || this.currentlyBombing) && target.length < this.firingRange,
             }
         }
@@ -117,13 +117,72 @@ class io_drag extends IO {
                 }
             }
             return {
-                goal: goal,
-                power: power,
+                fire: target.length >= (orbit + 50),
+                alt: target.length <= (orbit + 100),
+                goal,
+                power,
             }
         }
     }
 }
 ioTypes.drag = io_drag;
+
+class io_missileMotion extends IO {
+    constructor(body, opts = {}) {
+        super(body);
+        this.slowTurnDelay = opts.slowTurnDelay ?? 0;
+        this.fastTurnDelay = opts.fastTurnDelay ?? 1000;
+        this.slowTurnRate = opts.slowTurnRate ?? 0.06;
+
+        this.initTime = Date.now();
+    }
+    think(input) {
+        // If no target then exit
+        if (!input.target) return;
+
+        let lifetime = Date.now() - this.initTime;
+
+        let currentAngle = this.body.facing;
+        let target = new Vector(input.target.x, input.target.y);
+        let desiredAngle = target.direction;
+        let targetLength = target.length;
+
+        let newX = 0, newY = 0;
+
+        // If it's before the slow turn phase then don't turn
+        if (lifetime < this.slowTurnDelay) {
+            newX = targetLength * Math.cos(currentAngle);
+            newY = targetLength * Math.sin(currentAngle);
+            return {
+                target: {x: newX, y: newY},
+            }
+        }
+
+        this.body.facingType = "toTarget";
+        let angleDifference = util.angleDifference(currentAngle, desiredAngle);
+
+        // If it's during the fast turn phase then cancel sideways velocity
+        if (lifetime > this.fastTurnDelay) {
+            angleDifference = util.angleDifference(this.body.velocity.direction, desiredAngle);
+            let newAngle = desiredAngle + util.clamp(angleDifference, -0.3, 0.3);
+            newX = targetLength * Math.cos(newAngle);
+            newY = targetLength * Math.sin(newAngle);
+            return {
+                target: {x: newX, y: newY},
+            }
+        }
+
+        // Otherwise slowly turn to the target angle
+        let turnRate = util.clamp(angleDifference, -this.slowTurnRate, this.slowTurnRate);
+        let newAngle = currentAngle + turnRate;
+        newX = targetLength * Math.cos(newAngle);
+        newY = targetLength * Math.sin(newAngle);
+        return {
+            target: {x: newX, y: newY},
+        }
+    }
+}
+ioTypes.missileMotion = io_missileMotion;
 
 module.exports = ({ Class }) => {
     // Projectiles
@@ -194,6 +253,35 @@ module.exports = ({ Class }) => {
                 AUTOFIRE: true,
                 STAT_CALCULATOR: gunCalcNames.thruster,
                 SHOOT_SETTINGS: combineStats([g.basic, g.missileTrail, g.rocketeerMissileTrail, {recoil: 1.7}]),
+                TYPE: ["bullet", { PERSISTS_AFTER_DEATH: true }],
+            },
+        }],
+        TURRETS: [{
+            POSITION: [9, 0, 0, 0, 0, 1],
+            TYPE: ["triangle", {COLOR: 16}]
+        }]
+    }
+    Class.mirvMissile = {
+        PARENT: "missile",
+        LABEL: "Homing Missile",
+        BODY: { FOV: 10, SPEED: 0.04 },
+        CONTROLLERS: ["nearestDifferentMaster", "missileMotion"],
+        FACING_TYPE: "withMotion",
+        AI: {chase: false, SKYNET: true, },
+        GUNS: [{
+            POSITION: [16.5, 10, 1.5, 0, 0, 180, 1],
+            PROPERTIES: {
+                AUTOFIRE: true,
+                STAT_CALCULATOR: gunCalcNames.thruster,
+                SHOOT_SETTINGS: combineStats([g.basic, g.missileTrail, g.rocketeerMissileTrail, {reload: 2, recoil: 1}]),
+                TYPE: ["bullet", { PERSISTS_AFTER_DEATH: true }],
+            },
+        }, {
+            POSITION: [16.5, 10, 1.5, 0, 0, 180, 5.5],
+            PROPERTIES: {
+                AUTOFIRE: true,
+                STAT_CALCULATOR: gunCalcNames.thruster,
+                SHOOT_SETTINGS: combineStats([g.basic, g.missileTrail, g.rocketeerMissileTrail, {reload: 2, recoil: 1.25}]),
                 TYPE: ["bullet", { PERSISTS_AFTER_DEATH: true }],
             },
         }],

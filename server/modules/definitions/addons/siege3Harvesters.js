@@ -220,65 +220,65 @@ module.exports = ({ Class }) => {
     Class.irrigator = {
         PARENT: "genericHarvester",
         LABEL: "Irrigator",
-        CONTROLLERS: ["nearestDifferentMaster", ["drag", {range: 1600}]],
+        CONTROLLERS: ["nearestDifferentMaster", ["drag", {range: 1500}]],
         BODY: {
             HEALTH: harvesterStats.HEALTH * 1.5,
-            SPEED: harvesterStats.SPEED * 0.7,
+            SPEED: harvesterStats.SPEED,
             SHIELD: harvesterStats.SHIELD * 1.7,
-            FOV: harvesterStats.FOV * 1.6,
+            FOV: harvesterStats.FOV * 2,
         },
         AI: {IGNORE_SHAPES: true, SKYNET: true},
         GUNS: [
             { // BR Missile
-                POSITION: [9, 6.5, -0.7, 7, 2, 60, 0.12],
+                POSITION: [9, 6.5, -0.7, 7, 2, 45, 0.18],
                 PROPERTIES: {
-                    SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.launcher, g.rocketeer, {speed: 8, maxSpeed: 2, damage: 0.25, size: 0.7, range: 1.25, reload: 2.5}]),
-                    TYPE: "homingMissile",
+                    SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.launcher, g.rocketeer, {speed: 8, maxSpeed: 2, damage: 0.3, size: 0.7, range: 1.25, reload: 2.5}]),
+                    TYPE: "mirvMissile",
                     STAT_CALCULATOR: gunCalcNames.sustained,
                     ALT_FIRE: true,
                 },
             }, {
-                POSITION: [17, 10.5, 0.65, -3, 2, 60, 0],
+                POSITION: [17, 10.5, 0.65, -3, 2, 45, 0],
             }, {
-                POSITION: [13.5, 7, -0.55, -3, 2, 60, 0],
+                POSITION: [13.5, 7, -0.55, -3, 2, 45, 0],
             }, { // BL Missile
-                POSITION: [9, 6.5, -0.7, 7, -2, -60, 0.12],
+                POSITION: [9, 6.5, -0.7, 7, -2, -45, 0.18],
                 PROPERTIES: {
-                    SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.launcher, g.rocketeer, {speed: 8, maxSpeed: 2, damage: 0.25, size: 0.7, range: 1.25, reload: 2.5}]),
-                    TYPE: "homingMissile",
+                    SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.launcher, g.rocketeer, {speed: 8, maxSpeed: 2, damage: 0.3, size: 0.7, range: 1.25, reload: 2.5}]),
+                    TYPE: "mirvMissile",
                     STAT_CALCULATOR: gunCalcNames.sustained,
                     ALT_FIRE: true,
                 },
             }, {
-                POSITION: [17, 10.5, 0.65, -3, -2, -60, 0],
+                POSITION: [17, 10.5, 0.65, -3, -2, -45, 0],
             }, {
-                POSITION: [13.5, 7, -0.55, -3, -2, -60, 0],
+                POSITION: [13.5, 7, -0.55, -3, -2, -45, 0],
             }, { // FR Missile
-                POSITION: [9, 6.5, -0.7, 8.5, 1, 30, 0],
+                POSITION: [9, 6.5, -0.7, 8.5, 1, 18, 0.06],
                 PROPERTIES: {
-                    SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.launcher, g.rocketeer, {speed: 8, maxSpeed: 2, damage: 0.25, size: 0.7, range: 1.25, reload: 2.5}]),
-                    TYPE: "homingMissile",
+                    SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.launcher, g.rocketeer, {speed: 8, maxSpeed: 2, damage: 0.3, size: 0.7, range: 1.25, reload: 2.5}]),
+                    TYPE: "mirvMissile",
                     STAT_CALCULATOR: gunCalcNames.sustained,
                     ALT_FIRE: true,
                 },
             }, {
-                POSITION: [17, 10.5, 0.65, -1.5, 1, 30, 0],
+                POSITION: [17, 10.5, 0.65, -1.5, 1, 18, 0],
             }, {
-                POSITION: [13.5, 7, -0.55, -1.5, 1, 30, 0],
+                POSITION: [13.5, 7, -0.55, -1.5, 1, 18, 0],
             }, { // FL Missile
-                POSITION: [9, 6.5, -0.7, 8.5, -1, -30, 0],
+                POSITION: [9, 6.5, -0.7, 8.5, -1, -18, 0.06],
                 PROPERTIES: {
-                    SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.launcher, g.rocketeer, {speed: 8, maxSpeed: 2, damage: 0.25, size: 0.7, range: 1.25, reload: 2.5}]),
-                    TYPE: "homingMissile",
+                    SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.launcher, g.rocketeer, {speed: 8, maxSpeed: 2, damage: 0.3, size: 0.7, range: 1.25, reload: 2.5}]),
+                    TYPE: "mirvMissile",
                     STAT_CALCULATOR: gunCalcNames.sustained,
                     ALT_FIRE: true,
                 },
             }, {
-                POSITION: [17, 10.5, 0.65, -1.5, -1, -30, 0],
+                POSITION: [17, 10.5, 0.65, -1.5, -1, -18, 0],
             }, {
-                POSITION: [13.5, 7, -0.55, -1.5, -1, -30, 0],
+                POSITION: [13.5, 7, -0.55, -1.5, -1, -18, 0],
             }, 
-            ...addThruster(2.6)
+            ...addThruster(3)
         ],
         TURRETS: [
             {
