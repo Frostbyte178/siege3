@@ -127,12 +127,12 @@ class io_drag extends IO {
 }
 ioTypes.drag = io_drag;
 
-class io_missileMotion extends IO {
+class io_missileGuidance extends IO {
     constructor(body, opts = {}) {
         super(body);
-        this.slowTurnDelay = opts.slowTurnDelay ?? 0;
-        this.fastTurnDelay = opts.fastTurnDelay ?? 1000;
-        this.slowTurnRate = opts.slowTurnRate ?? 0.06;
+        this.slowTurnDelay = opts.slowTurnDelay || 0;
+        this.fastTurnDelay = opts.fastTurnDelay || 1000;
+        this.slowTurnRate = opts.slowTurnRate || 0.045;
 
         this.initTime = Date.now();
     }
@@ -149,11 +149,13 @@ class io_missileMotion extends IO {
 
         let newX = 0, newY = 0;
 
-        // If it's before the slow turn phase then don't turn
+        // If it's before the slow turn phase then don't turn and activate the secondary thruster
         if (lifetime < this.slowTurnDelay) {
             newX = targetLength * Math.cos(currentAngle);
             newY = targetLength * Math.sin(currentAngle);
             return {
+                fire: true,
+                alt: false,
                 target: {x: newX, y: newY},
             }
         }
@@ -161,28 +163,32 @@ class io_missileMotion extends IO {
         this.body.facingType = "toTarget";
         let angleDifference = util.angleDifference(currentAngle, desiredAngle);
 
-        // If it's during the fast turn phase then cancel sideways velocity
+        // If it's during the fast turn phase then cancel sideways velocity and activate the primary thruster
         if (lifetime > this.fastTurnDelay) {
             angleDifference = util.angleDifference(this.body.velocity.direction, desiredAngle);
             let newAngle = desiredAngle + util.clamp(angleDifference, -0.3, 0.3);
             newX = targetLength * Math.cos(newAngle);
             newY = targetLength * Math.sin(newAngle);
             return {
+                fire: false,
+                alt: true,
                 target: {x: newX, y: newY},
             }
         }
 
-        // Otherwise slowly turn to the target angle
+        // Otherwise slowly turn to the target angle and activate the secondary thruster
         let turnRate = util.clamp(angleDifference, -this.slowTurnRate, this.slowTurnRate);
         let newAngle = currentAngle + turnRate;
         newX = targetLength * Math.cos(newAngle);
         newY = targetLength * Math.sin(newAngle);
         return {
+            fire: true,
+            alt: false,
             target: {x: newX, y: newY},
         }
     }
 }
-ioTypes.missileMotion = io_missileMotion;
+ioTypes.missileGuidance = io_missileGuidance;
 
 module.exports = ({ Class }) => {
     // Projectiles
@@ -241,48 +247,27 @@ module.exports = ({ Class }) => {
         ],
     }
     Class.homingMissile = {
-        PARENT: "missile",
+        PARENT: "bullet",
         LABEL: "Homing Missile",
-        BODY: { FOV: 10, SPEED: 0.04 },
-        CONTROLLERS: ["nearestDifferentMaster"],
-        FACING_TYPE: "smoothToTarget",
-        AI: {chase: false, SKYNET: true, },
-        GUNS: [{
-            POSITION: [16.5, 10, 1.5, 0, 0, 180, 10],
-            PROPERTIES: {
-                AUTOFIRE: true,
-                STAT_CALCULATOR: gunCalcNames.thruster,
-                SHOOT_SETTINGS: combineStats([g.basic, g.missileTrail, g.rocketeerMissileTrail, {recoil: 1.7}]),
-                TYPE: ["bullet", { PERSISTS_AFTER_DEATH: true }],
-            },
-        }],
-        TURRETS: [{
-            POSITION: [9, 0, 0, 0, 0, 1],
-            TYPE: ["triangle", {COLOR: 16}]
-        }]
-    }
-    Class.mirvMissile = {
-        PARENT: "missile",
-        LABEL: "Homing Missile",
-        BODY: { FOV: 10, SPEED: 0.04 },
-        CONTROLLERS: ["nearestDifferentMaster", "missileMotion"],
+        BODY: { FOV: 10, SPEED: 2, RANGE: 100 },
+        CONTROLLERS: ["nearestDifferentMaster", "missileGuidance"],
         FACING_TYPE: "withMotion",
-        AI: {chase: false, SKYNET: true, },
+        AI: {chase: true, SKYNET: true, },
+        INDEPENDENT: true,
         GUNS: [{
-            POSITION: [16.5, 10, 1.5, 0, 0, 180, 1],
+            POSITION: [16.5, 10, 1.5, 0, 0, 180, 0],
             PROPERTIES: {
-                AUTOFIRE: true,
                 STAT_CALCULATOR: gunCalcNames.thruster,
-                SHOOT_SETTINGS: combineStats([g.basic, g.missileTrail, g.rocketeerMissileTrail, {reload: 2, recoil: 1}]),
+                SHOOT_SETTINGS: combineStats([g.basic, g.missileTrail, g.rocketeerMissileTrail, {reload: 1.6, recoil: 0.8}]),
                 TYPE: ["bullet", { PERSISTS_AFTER_DEATH: true }],
             },
         }, {
-            POSITION: [16.5, 10, 1.5, 0, 0, 180, 5.5],
+            POSITION: [16.5, 10, 1.5, 0, 0, 180, 0],
             PROPERTIES: {
-                AUTOFIRE: true,
                 STAT_CALCULATOR: gunCalcNames.thruster,
-                SHOOT_SETTINGS: combineStats([g.basic, g.missileTrail, g.rocketeerMissileTrail, {reload: 2, recoil: 1.25}]),
+                SHOOT_SETTINGS: combineStats([g.basic, g.missileTrail, g.rocketeerMissileTrail, {reload: 0.8, recoil: 1.15}]),
                 TYPE: ["bullet", { PERSISTS_AFTER_DEATH: true }],
+                ALT_FIRE: true,
             },
         }],
         TURRETS: [{

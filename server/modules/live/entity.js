@@ -977,7 +977,13 @@ class Entity extends EventEmitter {
             listenToPlayer = this.controllers.shift();
         }
         if (!Array.isArray(newIO)) newIO = [newIO];
-        this.controllers = newIO.concat(this.controllers);
+        for (let io of newIO) {
+            for (let i in this.controllers) {
+                let oldIO = this.controllers[i];
+                if (io.constructor === oldIO.constructor)  this.controllers.splice(i, 1);
+            }
+        }
+        this.controllers = (this.controllers ?? []).concat(newIO);
         if (listenToPlayer) this.controllers.unshift(listenToPlayer);
     }
     become(player, dom = false) {
