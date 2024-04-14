@@ -166,7 +166,7 @@ class io_missileGuidance extends IO {
         // If it's during the fast turn phase then cancel sideways velocity and activate the primary thruster
         if (lifetime > this.fastTurnDelay) {
             angleDifference = util.angleDifference(this.body.velocity.direction, desiredAngle);
-            let newAngle = desiredAngle + util.clamp(angleDifference, -0.3, 0.3);
+            let newAngle = desiredAngle + util.clamp(angleDifference, -0.5, 0.5);
             newX = targetLength * Math.cos(newAngle);
             newY = targetLength * Math.sin(newAngle);
             return {

@@ -242,53 +242,53 @@ module.exports = ({ Class }) => {
         AI: {IGNORE_SHAPES: true, SKYNET: true},
         GUNS: [
             { // BR Missile
-                POSITION: [9, 6.5, -0.7, 7, 3, 45, 0.18],
+                POSITION: [9, 5.5, -0.7, 7, 5, 28, 0.18],
                 PROPERTIES: {
                     SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.launcher, g.rocketeer, {speed: 8, damage: 0.3, size: 0.7, range: 1.1, reload: 2.5}]),
-                    TYPE: ["homingMissile", {CONTROLLERS: [["missileGuidance", {slowTurnDelay: 500, fastTurnDelay: 1400}]]}],
+                    TYPE: ["homingMissile", {CONTROLLERS: [["missileGuidance", {slowTurnDelay: 800, fastTurnDelay: 1700}]]}],
                     STAT_CALCULATOR: gunCalcNames.sustained,
                     ALT_FIRE: true,
                 },
             }, {
-                POSITION: [17, 10.5, 0.65, -3, 3, 45, 0],
+                POSITION: [17, 8.5, 0.65, -3, 5, 28, 0],
             }, {
-                POSITION: [13.5, 7, -0.55, -3, 3, 45, 0],
+                POSITION: [13.5, 6, -0.55, -3, 5, 28, 0],
             }, { // BL Missile
-                POSITION: [9, 6.5, -0.7, 7, -3, -45, 0.18],
+                POSITION: [9, 5.5, -0.7, 7, -5, -28, 0.18],
                 PROPERTIES: {
                     SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.launcher, g.rocketeer, {speed: 8, damage: 0.3, size: 0.7, range: 1.1, reload: 2.5}]),
-                    TYPE: ["homingMissile", {CONTROLLERS: [["missileGuidance", {slowTurnDelay: 500, fastTurnDelay: 1400}]]}],
+                    TYPE: ["homingMissile", {CONTROLLERS: [["missileGuidance", {slowTurnDelay: 800, fastTurnDelay: 1700}]]}],
                     STAT_CALCULATOR: gunCalcNames.sustained,
                     ALT_FIRE: true,
                 },
             }, {
-                POSITION: [17, 10.5, 0.65, -3, -3, -45, 0],
+                POSITION: [17, 8.5, 0.65, -3, -5, -28, 0],
             }, {
-                POSITION: [13.5, 7, -0.55, -3, -3, -45, 0],
+                POSITION: [13.5, 6, -0.55, -3, -5, -28, 0],
             }, { // FR Missile
-                POSITION: [9, 6.5, -0.7, 8.5, 2, 12, 0.06],
+                POSITION: [9, 5.5, -0.7, 8.5, 2, 9, 0.06],
                 PROPERTIES: {
                     SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.launcher, g.rocketeer, {speed: 8, damage: 0.3, size: 0.7, range: 1.1, reload: 2.5}]),
-                    TYPE: "homingMissile",
+                    TYPE: ["homingMissile", {CONTROLLERS: [["missileGuidance", {slowTurnDelay: 800, fastTurnDelay: 1400}]]}],
                     STAT_CALCULATOR: gunCalcNames.sustained,
                     ALT_FIRE: true,
                 },
             }, {
-                POSITION: [17, 10.5, 0.65, -1.5, 2, 12, 0],
+                POSITION: [17, 8.5, 0.65, -1.5, 2, 9, 0],
             }, {
-                POSITION: [13.5, 7, -0.55, -1.5, 2, 12, 0],
+                POSITION: [13.5, 6, -0.55, -1.5, 2, 9, 0],
             }, { // FL Missile
-                POSITION: [9, 6.5, -0.7, 8.5, -2, -12, 0.06],
+                POSITION: [9, 5.5, -0.7, 8.5, -2, -9, 0.06],
                 PROPERTIES: {
                     SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.launcher, g.rocketeer, {speed: 8, damage: 0.3, size: 0.7, range: 1.1, reload: 2.5}]),
-                    TYPE: "homingMissile",
+                    TYPE: ["homingMissile", {CONTROLLERS: [["missileGuidance", {slowTurnDelay: 800, fastTurnDelay: 1400}]]}],
                     STAT_CALCULATOR: gunCalcNames.sustained,
                     ALT_FIRE: true,
                 },
             }, {
-                POSITION: [17, 10.5, 0.65, -1.5, -2, -12, 0],
+                POSITION: [17, 8.5, 0.65, -1.5, -2, -9, 0],
             }, {
-                POSITION: [13.5, 7, -0.55, -1.5, -2, -12, 0],
+                POSITION: [13.5, 6, -0.55, -1.5, -2, -9, 0],
             }, 
             ...addThruster(3.5)
         ],
