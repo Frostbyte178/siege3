@@ -44,11 +44,10 @@ class io_bombingRun extends IO {
         this.alwaysFireInRange = opts.alwaysFireInRange ?? false;
         // If we should continue to do bombing runs below 15% health
         this.bombAtLowHealth = opts.bombAtLowHealth ?? false;
-        // this.maxBreakAwayTime = opts.maxBreakAwayTime ?? 8;
+
         this.currentlyBombing = true;
         this.dodgeDirection = 0;
         this.storedAngle = 0;
-        // this.lastBreakAwayTime = Date.now();
         this.breakAwayAngle *= Math.PI / 180;
     }
     think(input) {
@@ -198,7 +197,7 @@ module.exports = ({ Class }) => {
             {
                 POSITION: [0, 10, 0, 0, 0, 0, 9999],
                 PROPERTIES: {
-                    SHOOT_SETTINGS: combineStats([g.basic, {speed: 0, range: 0.05, health: 1e6, size: 16, damage: 1.2}]),
+                    SHOOT_SETTINGS: combineStats([g.basic, {speed: 0, range: 0.05, health: 1e6, size: 16}]),
                     TYPE: ["bullet", { MOTION_TYPE: "withMaster", COLOR: 2, PERSISTS_AFTER_DEATH: true, ALPHA: 0.6 }],
                     SHOOT_ON_DEATH: true,
                     STAT_CALCULATOR: gunCalcNames.sustained,
