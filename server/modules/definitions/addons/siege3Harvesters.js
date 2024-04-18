@@ -301,7 +301,7 @@ module.exports = ({ Class }) => {
             }
         ]
     }
-    g.quarterstaff = { reload: 2, health: 1.3, speed: 1.3, spray: 1.5 }
+    g.quarterstaff = { reload: 2, health: 1.6, speed: 1.3, spray: 1.5 }
     Class.quarterstaff = {
         PARENT: "genericHarvester",
         LABEL: "Quarterstaff",
@@ -325,7 +325,7 @@ module.exports = ({ Class }) => {
         }),
         AI: {IGNORE_SHAPES: true, BLIND: true, SKYNET: true, chase: true},
         GUNS: [
-            { // Shotgun of 14 bullets
+            { // Shotgun of 15 bullets
                 POSITION: [4, 3, 1, 11, -3, 0, 0.05],
                 PROPERTIES: {
                     SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun, g.quarterstaff]),
@@ -410,7 +410,14 @@ module.exports = ({ Class }) => {
                     ALT_FIRE: true,
                 },
             }, {
-                POSITION: [1, 2, 1, 13, 2, 0, 0.05],
+                POSITION: [1, 4, 1, 13, 0, 0, 0.05],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun, g.quarterstaff]),
+                    TYPE: "bullet",
+                    ALT_FIRE: true,
+                },
+            }, {
+                POSITION: [1, 3, 1, 12, 1, 0, 0.05],
                 PROPERTIES: {
                     SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun, g.quarterstaff]),
                     TYPE: "casing",
