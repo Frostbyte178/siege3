@@ -111,7 +111,7 @@ module.exports = ({ Class }) => {
         CONTROLLERS: ["nearestDifferentMaster"],
         INDEPENDENT: true,
         BODY: {FOV: 15},
-        AI: {IGNORE_SHAPES: true, SKYNET: true, chase: true},
+        AI: {IGNORE_SHAPES: true, chase: true},
         GUNS: [
             {
                 POSITION: [12, 9, 1, 9, 0, 0, 0],
@@ -139,21 +139,21 @@ module.exports = ({ Class }) => {
             {
                 POSITION: [13, 12, 0.001, 6, 0, 0, 0],
             }, { // Machine traps
-                POSITION: [13, 9, -0.4, 0, 0, 60, 0]
+                POSITION: [12.5, 8, 1, 0, 0, 60, 0]
             }, {
-                POSITION: [2, 9, 1.3, 13, 0, 60, 0],
+                POSITION: [2.5, 8, 1.55, 12.5, 0, 60, 0],
                 PROPERTIES: {
-                    SHOOT_SETTINGS: combineStats([g.trap, g.hexatrap, g.slow, {size: 0.85, damage: 0.8, reload: 0.5}]),
+                    SHOOT_SETTINGS: combineStats([g.trap, g.slow, {size: 0.85, damage: 0.8, reload: 0.5}]),
                     TYPE: "trap",
                     STAT_CALCULATOR: gunCalcNames.trap,
                     AUTOFIRE: true,
                 }
             }, {
-                POSITION: [13, 9, -0.4, 0, 0, -60, 0]
+                POSITION: [12.5, 8, 1, 0, 0, -60, 0]
             }, {
-                POSITION: [2, 9, 1.3, 13, 0, -60, 0],
+                POSITION: [2.5, 8, 1.55, 12.5, 0, -60, 0],
                 PROPERTIES: {
-                    SHOOT_SETTINGS: combineStats([g.trap, g.hexatrap, g.slow, {size: 0.85, damage: 0.8, reload: 0.5}]),
+                    SHOOT_SETTINGS: combineStats([g.trap, g.slow, {size: 0.85, damage: 0.8, reload: 0.5}]),
                     TYPE: "trap",
                     STAT_CALCULATOR: gunCalcNames.trap,
                     AUTOFIRE: true,
@@ -185,7 +185,7 @@ module.exports = ({ Class }) => {
         AI: {IGNORE_SHAPES: true, SKYNET: true, chase: true},
         GUNS: [
             { // Shockwave
-                POSITION: [13, 10, -0.4, 3, 0, 0, 0],
+                POSITION: [14, 12, -0.7, 3, 0, 0, 0],
                 PROPERTIES: {
                     SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.mach, g.mach, {speed: 0.25, health: 2, density: 3, spray: 0.5, size: 0.5, shudder: 0.1}]),
                     TYPE: "bullet",
@@ -619,6 +619,80 @@ module.exports = ({ Class }) => {
             }
         ]
     }
+    Class.cultivatorTurret = {
+        PARENT: "genericTank",
+        CONTROLLERS: ["nearestDifferentMaster", "onlyAcceptInArc"],
+        INDEPENDENT: true,
+        BODY: {FOV: 15},
+        AI: {IGNORE_SHAPES: true, SKYNET: true},
+        GUNS: [
+            {
+                POSITION: [10, 13, -0.5, 10, 0, 0, 0],
+            }, {
+                POSITION: [18, 14, 1, 0, 0, 0, 0],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.arty, g.arty, g.skim, {health: 1.1}]),
+                    TYPE: "missile",
+                    STAT_CALCULATOR: gunCalcNames.sustained,
+                },
+            },
+        ]
+    }
+    Class.cultivator = {
+        PARENT: "genericHarvester",
+        LABEL: "Cultivator",
+        CONTROLLERS: ["nearestDifferentMaster", "circleTarget"],
+        BODY: {
+            HEALTH: harvesterStats.HEALTH * 0.8,
+            SPEED: harvesterStats.SPEED * 1.4,
+            SHIELD: harvesterStats.SHIELD * 1.3,
+        },
+        AI: {IGNORE_SHAPES: true, SKYNET: true, chase: true},
+        GUNS: [
+            {
+                POSITION: [13, 12, 0.001, 6, 0, 0, 0],
+            }, {
+                POSITION: [3, 9, 0.75, 9, 0, 60, 0],
+            }, {
+                POSITION: [3, 9, 0.75, 9, 0, -60, 0],
+            }, { // Thrusters
+                POSITION: [12.5, 7.5, -0.5, 1, -5, 165, 0],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.flank, g.tri, g.thruster, {reload: 0.5, recoil: 1.7, size: 0.8}]),
+                    TYPE: "bullet",
+                },
+            }, {
+                POSITION: [12.5, 7.5, -0.5, 1, 5, -165, 0],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.flank, g.tri, g.thruster, {reload: 0.5, recoil: 1.7, size: 0.8}]),
+                    TYPE: "bullet",
+                },
+            }, {
+                POSITION: [7, 6.5, 0.001, 6, 2.5, -130, 0],
+            }, {
+                POSITION: [7, 6.5, 0.001, 6, -2.5, 130, 0],
+            }, {
+                POSITION: [13, 9.5, 1, 0, 0, 180, 0]
+            }, {
+                POSITION: [3, 9.5, 1.5, 13, 0, 180, 0],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.trap, g.block, {reload: 1.3, health: 1.45}]),
+                    TYPE: "unsetPillbox",
+                    STAT_CALCULATOR: gunCalcNames.trap,
+                    AUTOFIRE: true,
+                }
+            },
+        ],
+        TURRETS: [
+            {
+                POSITION: [15, 0, 0, 180, 360, 1],
+                TYPE: ["hexagon", {COLOR: -1, MIRROR_MASTER_ANGLE: true}]
+            }, {
+                POSITION: [12, 0, 0, 0, 360, 1],
+                TYPE: "cultivatorTurret"
+            }
+        ]
+    }
 
     Class.harvesters = {
         PARENT: ["menu"],
@@ -630,7 +704,7 @@ module.exports = ({ Class }) => {
             POSITION: [15, 0, 0, 180, 360, 1],
             TYPE: ["hexagon", {COLOR: -1, MIRROR_MASTER_ANGLE: true}]
         }],
-        UPGRADES_TIER_0: ["furrower", "stockyard", "quarterstaff", "shepherd", "irrigator", "scarecrow", "pressurizer"],
+        UPGRADES_TIER_0: ["furrower", "stockyard", "quarterstaff", "shepherd", "irrigator", "scarecrow", "pressurizer", "cultivator"],
     }
 
     Class.bosses.UPGRADES_TIER_0.push("harvesters");
