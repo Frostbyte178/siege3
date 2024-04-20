@@ -223,6 +223,104 @@ class io_burstFire extends IO {
 }
 ioTypes.burstFire = io_burstFire;
 
+class io_underseerRepel extends IO {
+    constructor(body, opts = {}) {
+        super(body);
+        this.repelOffset = opts.repelOffset ?? 10;
+        this.baseRepelCenterDistance = opts.repelDistance ?? 1.5;
+        this.repelAtDroneCount = opts.repelDrones ?? this.body.maxChildren;
+        this.minDroneCount = opts.minDrones ?? this.body.maxChildren / 2;
+        this.droneRepelStartDelay = opts.repelDelay ?? 700;
+
+        this.actionId = 0;
+        this.drones = [];
+        /*
+        0: waiting for drones
+        1: repel stage 1
+        2: repel stage 2
+        3: squishing
+        */
+    }
+    getDroneMeanDistance() {
+        let meanDistance = 0;
+        // Sample drones for mean distance
+        for (let drone of this.drones) {
+            let relativeX = drone.x - this.body.x;
+            let relativeY = drone.y - this.body.y;
+            let distance = Math.sqrt(relativeX ** 2 + relativeY ** 2);
+            meanDistance += distance;
+        }
+        return meanDistance / this.drones.length;
+    }
+    getChildren() {
+        if (this.body.maxChildren) {
+            return this.body.children;
+        }
+
+        let children = [];
+        for (let gun of this.body.guns) {
+            if (gun.countsOwnKids) {
+                children.push(...gun.children);
+            }
+        }
+        return children;
+    }
+    think(input) {
+        if (!input.target) return;
+
+        this.awaitDroneRange = this.body.size * 1.25;
+        this.repelCenterDistance = this.baseRepelCenterDistance * this.body.size;
+        this.drones = this.getChildren();
+
+        let target = new Vector(input.target.x, input.target.y);
+
+        let meanDistance = this.getDroneMeanDistance();
+        if (this.actionId == 3 && meanDistance < target.length * 0.45) {
+            this.actionId = 0;
+        } else if (this.actionId == 0 && this.drones.length >= this.repelAtDroneCount) {
+            setTimeout(() => this.actionId = 1, this.droneRepelStartDelay);
+        } else if (this.actionId == 1 && meanDistance >= this.awaitDroneRange * 3) {
+            this.actionId = 2;
+        } else if (this.actionId == 2 && meanDistance >= (target.length + this.repelOffset)) {
+            this.actionId = 3;
+        }
+
+        let newX, newY;
+        switch (this.actionId) {
+            case 0:
+                newX = this.awaitDroneRange * Math.cos(target.direction);
+                newY = this.awaitDroneRange * Math.sin(target.direction);
+                return {
+                    target: {x: newX, y: newY},
+                    fire: true,
+                    alt: false,
+                }
+            case 1:
+                newX = -2 * this.awaitDroneRange * Math.cos(target.direction);
+                newY = -2 * this.awaitDroneRange * Math.sin(target.direction);
+                return {
+                    target: {x: newX, y: newY},
+                    fire: false,
+                    alt: true,
+                }
+            case 2:
+                newX = this.repelCenterDistance * Math.cos(target.direction);
+                newY = this.repelCenterDistance * Math.sin(target.direction);
+                return {
+                    target: {x: newX, y: newY},
+                    fire: false,
+                    alt: true,
+                }
+            case 3:
+                return {
+                    fire: true,
+                    alt: false,
+                }
+        }
+    }
+}
+ioTypes.underseerRepel = io_underseerRepel;
+
 module.exports = ({ Class }) => {
     // Projectiles
     Class.trueBomb = {

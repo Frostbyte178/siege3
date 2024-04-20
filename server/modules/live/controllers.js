@@ -508,9 +508,12 @@ class io_avoid extends IO {
     }
 }
 class io_minion extends IO {
-    constructor(body) {
+    constructor(body, opts = {}) {
         super(body)
-        this.turnwise = 1
+        this.turnwise = 1;
+        this.leashRange = opts.leash ?? 82;
+        this.orbitRange = opts.orbit ?? 140;
+        this.repelRange = opts.repel ?? 142;
     }
     think(input) {
         if (this.body.aiSettings.reverseDirection && ran.chance(0.005)) {
@@ -518,9 +521,9 @@ class io_minion extends IO {
         }
         if (input.target != null && (input.alt || input.main)) {
             let sizeFactor = Math.sqrt(this.body.master.size / this.body.master.SIZE)
-            let leash = 82 * sizeFactor
-            let orbit = 140 * sizeFactor
-            let repel = 142 * sizeFactor
+            let leash = this.leashRange * sizeFactor
+            let orbit = this.orbitRange * sizeFactor
+            let repel = this.repelRange * sizeFactor
             let goal
             let power = 1
             let target = new Vector(input.target.x, input.target.y)
