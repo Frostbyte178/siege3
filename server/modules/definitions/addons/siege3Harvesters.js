@@ -185,10 +185,6 @@ module.exports = ({ Class }) => {
         AI: {IGNORE_SHAPES: true, SKYNET: true, chase: true},
         GUNS: [
             { // Shockwave
-                POSITION: [13, 7, 0.001, 3, 5, 0, 0],
-            }, {
-                POSITION: [13, 7, 0.001, 3, -5, 0, 0],
-            }, {
                 POSITION: [13, 10, -0.4, 3, 0, 0, 0],
                 PROPERTIES: {
                     SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.mach, g.mach, {speed: 0.25, health: 2, density: 3, spray: 0.5, size: 0.5, shudder: 0.1}]),
@@ -484,6 +480,7 @@ module.exports = ({ Class }) => {
             SPEED: harvesterStats.SPEED * 1.65,
             FOV: harvesterStats.FOV * 1.2,
         },
+        AI: {IGNORE_SHAPES: true, BLIND: true, SKYNET: true, chase: true},
         GUNS: [
             { // Bomb launchers
                 POSITION: [5, 6, 1, 7.5, 5, 17, 0],
@@ -525,6 +522,103 @@ module.exports = ({ Class }) => {
             }
         ]
     }
+    Class.sniperPillboxTurret = {
+        PARENT: "autoTurret",
+        LABEL: "",
+        BODY: {
+            FOV: 10,
+        },
+        HAS_NO_RECOIL: true,
+        GUNS: [
+            {
+                POSITION: [29, 10, 1, 0, 0, 0, 0],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.assass, g.minion, g.turret, g.power, g.auto, g.notdense, {health: 1.3, speed: 0.8, maxSpeed: 0.8, range: 1.75}]),
+                    TYPE: "bullet",
+                },
+            }, {
+                POSITION: [5, 10, -1.6, 8.5, 0, 0, 0],
+            },
+        ],
+    }
+    Class.sniperPillbox = {
+        PARENT: 'unsetTrap',
+        LABEL: "Pillbox",
+        CONTROLLERS: ["nearestDifferentMaster"],
+        DIE_AT_RANGE: true,
+        INDEPENDENT: true,
+        AI: {SKYNET: true},
+        BODY: {FOV: 5},
+        TURRETS: [
+            {
+                POSITION: [11, 0, 0, 0, 360, 1],
+                TYPE: "sniperPillboxTurret",
+            },
+        ],
+    };
+    Class.scarecrow = {
+        PARENT: "genericHarvester",
+        LABEL: "Scarecrow",
+        CONTROLLERS: ["nearestDifferentMaster", ["drag", {range: 1250}]],
+        BODY: {
+            HEALTH: harvesterStats.HEALTH * 1.5,
+            SPEED: harvesterStats.SPEED,
+            SHIELD: harvesterStats.SHIELD * 1.7,
+            FOV: harvesterStats.FOV * 2,
+        },
+        SKILL: skillSet({
+            rld: 0.7,
+            dam: 0.5,
+            pen: 0.8,
+            str: 0.8,
+            spd: 0.8, // Default 0.2
+            atk: 0.3,
+            hlt: 1,
+            shi: 0.7,
+            rgn: 0.7,
+            mob: 1,
+        }),
+        AI: {IGNORE_SHAPES: true, SKYNET: true},
+        GUNS: [
+            {
+                POSITION: [28, 9.5, 1, 0, 0, 0, 0],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.assass, g.pound, {reload: 1.55, damage: 1.6, health: 1.1, speed: 1.45, maxSpeed: 1.45, range: 1.2}]),
+                    TYPE: "bullet",
+                    ALT_FIRE: true,
+                }
+            }, {
+                POSITION: [5, 9.5, -1.4, 8, 0, 0, 0]
+            }, {
+                POSITION: [13, 8, 1, 0, 0, 60, 0]
+            }, {
+                POSITION: [3, 8, 1.5, 13, 0, 60, 0],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.trap, g.block, g.pound, {speed: 1.3}]),
+                    TYPE: "sniperPillbox",
+                    STAT_CALCULATOR: gunCalcNames.trap,
+                    AUTOFIRE: true,
+                }
+            }, {
+                POSITION: [13, 8, 1, 0, 0, -60, 0]
+            }, {
+                POSITION: [3, 8, 1.5, 13, 0, -60, 0],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.trap, g.block, g.pound, {speed: 1.3}]),
+                    TYPE: "sniperPillbox",
+                    STAT_CALCULATOR: gunCalcNames.trap,
+                    AUTOFIRE: true,
+                }
+            },
+            ...addThruster(2.6)
+        ],
+        TURRETS: [
+            {
+                POSITION: [13, 0, 0, 180, 360, 1],
+                TYPE: ["hexagon", {COLOR: -1, MIRROR_MASTER_ANGLE: true}]
+            }
+        ]
+    }
 
     Class.harvesters = {
         PARENT: ["menu"],
@@ -536,7 +630,7 @@ module.exports = ({ Class }) => {
             POSITION: [15, 0, 0, 180, 360, 1],
             TYPE: ["hexagon", {COLOR: -1, MIRROR_MASTER_ANGLE: true}]
         }],
-        UPGRADES_TIER_0: ["furrower", "stockyard", "quarterstaff", "shepherd", "irrigator", "pressurizer"],
+        UPGRADES_TIER_0: ["furrower", "stockyard", "quarterstaff", "shepherd", "irrigator", "scarecrow", "pressurizer"],
     }
 
     Class.bosses.UPGRADES_TIER_0.push("harvesters");
