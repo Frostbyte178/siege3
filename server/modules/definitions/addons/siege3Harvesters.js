@@ -4,7 +4,7 @@ const g = require('../gunvals.js');
 
 const harvesterStats = {
     FOV: 2,
-    SPEED: 0.45 * base.SPEED,
+    SPEED: 0.65 * base.SPEED,
     HEALTH: 5 * base.HEALTH,
     DAMAGE: 1.75 * base.DAMAGE,
     SHIELD: 2 * base.SHIELD,
@@ -56,7 +56,7 @@ module.exports = ({ Class }) => {
         }),
     }
 
-    // Rushdown
+    // Rushdown destroyer + bombs
     Class.furrower = {
         PARENT: "genericHarvester",
         LABEL: "Furrower",
@@ -72,7 +72,7 @@ module.exports = ({ Class }) => {
             }, {
                 POSITION: [10, 6.5, 1.4, 1.5, 7, 12, 0],
                 PROPERTIES: {
-                    SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.launcher, {range: 0.4, speed: 2, maxSpeed: 0.4, size: 1.2, reload: 2.2, damage: 0.55, recoil: 0.15}]),
+                    SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.launcher, {range: 0.4, speed: 2, maxSpeed: 0.4, size: 1.2, reload: 2.2, damage: 0.8, recoil: 0.15}]),
                     TYPE: "trueBomb",
                     STAT_CALCULATOR: gunCalcNames.sustained,
                     ALT_FIRE: true,
@@ -82,7 +82,7 @@ module.exports = ({ Class }) => {
             }, {
                 POSITION: [10, 6.5, 1.4, 1.5, -7, -12, 0],
                 PROPERTIES: {
-                    SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.launcher, {range: 0.4, speed: 2, maxSpeed: 0.4, size: 1.2, reload: 2.2, damage: 0.55, recoil: 0.15}]),
+                    SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.launcher, {range: 0.4, speed: 2, maxSpeed: 0.4, size: 1.2, reload: 2.2, damage: 0.8, recoil: 0.15}]),
                     TYPE: "trueBomb",
                     STAT_CALCULATOR: gunCalcNames.sustained,
                     ALT_FIRE: true,
@@ -118,7 +118,7 @@ module.exports = ({ Class }) => {
             }, {
                 POSITION: [13, 12.5, 1.4, 5, 0, 0, 0.1],
                 PROPERTIES: {
-                    SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.launcher, {range: 0.65, speed: 2.5, maxSpeed: 0.55, size: 1.4, reload: 1.8, damage: 0.8, recoil: 0.15}]),
+                    SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.launcher, {range: 0.65, speed: 2.5, maxSpeed: 0.55, size: 1.4, reload: 1.8, recoil: 0.15}]),
                     TYPE: "trueBomb",
                     STAT_CALCULATOR: gunCalcNames.sustained,
                 },
@@ -307,7 +307,7 @@ module.exports = ({ Class }) => {
         LABEL: "Quarterstaff",
         CONTROLLERS: ["nearestDifferentMaster", ["bombingRun", {goAgainRange: 1600, firingRange: 550, breakAwayRange: 400, alwaysFireInRange: true}]],
         BODY: {
-            HEALTH: harvesterStats.HEALTH * 0.7e90,
+            HEALTH: harvesterStats.HEALTH * 0.7,
             SPEED: harvesterStats.SPEED * 1.8,
             FOV: harvesterStats.FOV * 1.2,
         },
@@ -474,6 +474,57 @@ module.exports = ({ Class }) => {
             }
         ]
     }
+    g.shepherd = {range: 0.25, speed: 1.5, maxSpeed: 0.2, size: 1.2, reload: 0.45, damage: 0.5, recoil: 0.15}
+    Class.shepherd = {
+        PARENT: "genericHarvester",
+        LABEL: "Shepherd",
+        CONTROLLERS: ["nearestDifferentMaster", ["bombingRun", {goAgainRange: 1800, firingRange: 600, breakAwayRange: 450, breakAwayAngle: 6}], ["burstFire", {alt: true, length: 1750}]],
+        BODY: {
+            HEALTH: harvesterStats.HEALTH * 0.8e90,
+            SPEED: harvesterStats.SPEED * 1.65,
+            FOV: harvesterStats.FOV * 1.2,
+        },
+        GUNS: [
+            { // Bomb launchers
+                POSITION: [5, 6, 1, 7.5, 5, 17, 0],
+            }, {
+                POSITION: [10, 7.5, 1.4, 0.5, 5, 17, 0.5],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.launcher, g.shepherd]),
+                    TYPE: "trueBomb",
+                    STAT_CALCULATOR: gunCalcNames.sustained,
+                    ALT_FIRE: true,
+                },
+            }, {
+                POSITION: [5, 6, 1, 7.5, -5, -17, 0],
+            }, {
+                POSITION: [10, 7.5, 1.4, 0.5, -5, -17, 0.5],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.launcher, g.shepherd]),
+                    TYPE: "trueBomb",
+                    STAT_CALCULATOR: gunCalcNames.sustained,
+                    ALT_FIRE: true,
+                },
+            }, {
+                POSITION: [5, 6, 1, 12.5, 0, 0, 0],
+            }, {
+                POSITION: [10, 7.5, 1.4, 5.5, 0, 0, 0],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.launcher, g.shepherd]),
+                    TYPE: "trueBomb",
+                    STAT_CALCULATOR: gunCalcNames.sustained,
+                    ALT_FIRE: true,
+                },
+            },
+            ...addThruster(3.7),
+        ],
+        TURRETS: [
+            {
+                POSITION: [13, 0, 0, 180, 360, 1],
+                TYPE: ["hexagon", {COLOR: -1, MIRROR_MASTER_ANGLE: true}]
+            }
+        ]
+    }
 
     Class.harvesters = {
         PARENT: ["menu"],
@@ -485,7 +536,7 @@ module.exports = ({ Class }) => {
             POSITION: [15, 0, 0, 180, 360, 1],
             TYPE: ["hexagon", {COLOR: -1, MIRROR_MASTER_ANGLE: true}]
         }],
-        UPGRADES_TIER_0: ["furrower", "pressurizer", "stockyard", "irrigator", "quarterstaff"],
+        UPGRADES_TIER_0: ["furrower", "stockyard", "quarterstaff", "shepherd", "irrigator", "pressurizer"],
     }
 
     Class.bosses.UPGRADES_TIER_0.push("harvesters");

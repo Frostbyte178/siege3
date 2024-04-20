@@ -189,6 +189,40 @@ class io_missileGuidance extends IO {
 }
 ioTypes.missileGuidance = io_missileGuidance;
 
+class io_burstFire extends IO {
+    constructor(body, opts = {}) {
+        super(body);
+        this.useAlt = opts.alt ?? true;
+        this.startDelay = opts.delay ?? 0;
+        this.fireTime = opts.length ?? 700;
+
+        this.timer = this.startDelay + this.fireTime + 1e5;
+        this.initTime = 1;
+        this.isBursting = false;
+    }
+    think(input) {
+        let fireInput = this.useAlt ? input.alt : input.fire;
+
+        if (fireInput && !this.isBursting) {
+            this.initTime = Date.now();
+            this.isBursting = true;
+        }
+
+        this.timer = Date.now() - this.initTime;
+        if (this.isBursting && this.timer > this.startDelay + this.fireTime) {
+            this.isBursting = false;
+            return;
+        }
+        if (this.isBursting) {
+            return {
+                fire: !this.useAlt || input.fire,
+                alt: this.useAlt || input.alt,
+            }
+        }
+    }
+}
+ioTypes.burstFire = io_burstFire;
+
 module.exports = ({ Class }) => {
     // Projectiles
     Class.trueBomb = {
