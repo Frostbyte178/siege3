@@ -227,6 +227,7 @@ class io_underseerRepel extends IO {
     constructor(body, opts = {}) {
         super(body);
         this.repelOffset = opts.repelOffset ?? 10;
+        this.repelTriggerRange = opts.trigger ?? 175;
         this.baseRepelCenterDistance = opts.repelDistance ?? 1.5;
         this.repelAtDroneCount = opts.repelDrones ?? this.body.maxChildren;
         this.minDroneCount = opts.minDrones ?? this.body.maxChildren / 2;
@@ -266,18 +267,23 @@ class io_underseerRepel extends IO {
         return children;
     }
     think(input) {
-        if (!input.target) return;
+        if (!input.fire && !input.alt || !input.target) {
+            this.actionId = 0;
+            return;
+        }
 
         this.awaitDroneRange = this.body.size * 1.25;
         this.repelCenterDistance = this.baseRepelCenterDistance * this.body.size;
         this.drones = this.getChildren();
 
         let target = new Vector(input.target.x, input.target.y);
+        let sizeFactor = Math.sqrt(this.body.master.size / this.body.master.SIZE);
+        let repelTriggerRange = this.repelTriggerRange * sizeFactor;
 
         let meanDistance = this.getDroneMeanDistance();
         if (this.actionId == 3 && meanDistance < target.length * 0.45) {
             this.actionId = 0;
-        } else if (this.actionId == 0 && this.drones.length >= this.repelAtDroneCount) {
+        } else if (this.actionId == 0 && this.drones.length >= this.repelAtDroneCount && target.length <= repelTriggerRange) {
             setTimeout(() => this.actionId = 1, this.droneRepelStartDelay);
         } else if (this.actionId == 1 && meanDistance >= this.awaitDroneRange * 3) {
             this.actionId = 2;
@@ -320,6 +326,116 @@ class io_underseerRepel extends IO {
     }
 }
 ioTypes.underseerRepel = io_underseerRepel;
+
+class io_assemble extends IO {
+    constructor(body, opts = {}) {
+        super(body);
+        this.assembleBehindLimit = opts.behind ?? 3;
+        this.assembleAheadLimit = opts.ahead ?? 7;
+        this.assembleRange = opts.range ?? 400;
+        this.hideDelay = opts.hideDelay ?? 1500;
+
+        this.actionId = 0;
+        this.assembleCount = 0;
+        this.holdPos = {x: 0, y: 0};
+        /*
+        0: approaching target
+        1: assembling behind
+        2: moving behind trap
+        3: assembling ahead
+        4: assembling into the target
+        */
+    }
+    getAssembleCount() {
+        let children = [...this.body.children];
+        for (let gun of this.body.guns) {
+            if (gun.countsOwnKids) {
+                children.push(...gun.children);
+            }
+        }
+        for (let child of children) {
+            if (child.assemblerLevel) {
+                return child.assemblerLevel;
+            }
+        }
+        return 0;
+    }
+    think(input) {
+        if (!input.fire && !input.alt || !input.target) {
+            this.actionId = 0;
+            return;
+        }
+
+        let target = new Vector(input.target.x, input.target.y);
+        let sizeFactor = Math.sqrt(this.body.master.size / this.body.master.SIZE);
+
+        if (this.actionId == 0 && target.length <= (this.assembleRange * sizeFactor + 100)) {
+            this.actionId = 1;
+        } else if (this.actionId == 1 && this.assembleCount >= this.assembleBehindLimit && this.assembleCount < this.assembleAheadLimit) {
+            this.actionId = 2;
+            this.holdPos = {
+                x: this.body.x,
+                y: this.body.y,
+            }
+            setTimeout(() => this.actionId = 3, this.hideDelay);
+        } else if (this.actionId == 3 && this.assembleCount >= this.assembleAheadLimit) {
+            this.actionId = 4;
+        } else if (this.actionId == 4 && (this.assembleCount <= 1 || this.assembleCount >= this.assembleAheadLimit + 1)) {
+            this.actionId = 0;
+        }
+
+        let newX, newY, goal;
+        let bodySize = this.body.size;
+        this.assembleCount = this.getAssembleCount();
+        switch (this.actionId) {
+            case 0:
+                return {
+                    fire: false
+                };
+            case 1:
+                newX = bodySize * -2.5 * Math.cos(target.direction);
+                newY = bodySize * -2.5 * Math.sin(target.direction);
+                return {
+                    target: {x: newX, y: newY},
+                    fire: true,
+                };
+            case 2:
+                newX = bodySize * 0.5 * Math.cos(target.direction);
+                newY = bodySize * 0.5 * Math.sin(target.direction);
+                goal = {
+                    x: this.holdPos.x - bodySize * 5 * Math.cos(target.direction),
+                    y: this.holdPos.y - bodySize * 5 * Math.sin(target.direction),
+                }
+                return {
+                    target: {x: newX, y: newY},
+                    goal,
+                    fire: false,
+                };
+            case 3:
+                newX = bodySize * 2.5 * Math.cos(target.direction);
+                newY = bodySize * 2.5 * Math.sin(target.direction);
+                goal = {
+                    x: this.holdPos.x - bodySize * 5 * Math.cos(target.direction),
+                    y: this.holdPos.y - bodySize * 5 * Math.sin(target.direction),
+                }
+                return {
+                    target: {x: newX, y: newY},
+                    goal,
+                    fire: true,
+                };
+            case 4:
+                goal = {
+                    x: this.holdPos.x - bodySize * 5 * Math.cos(target.direction),
+                    y: this.holdPos.y - bodySize * 5 * Math.sin(target.direction),
+                }
+                return {
+                    goal,
+                    fire: true
+                }
+        }
+    }
+}
+ioTypes.assemble = io_assemble;
 
 module.exports = ({ Class }) => {
     // Projectiles
