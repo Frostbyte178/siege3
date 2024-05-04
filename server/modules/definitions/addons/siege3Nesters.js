@@ -207,9 +207,9 @@ module.exports = ({ Class }) => {
     for (let i = 0; i < 5; i++) {
         Class.nestIndustry.GUNS.push(
             {
-                POSITION: [12, 9.5, 1, 0, 0, 72 * i + 36, 0],
+                POSITION: [11.75, 9.5, 1, 0, 0, 72 * i + 36, 0],
             }, {
-                POSITION: [1.5, 10.5, 1, 12, 0, 72 * i + 36, 0],
+                POSITION: [1.5, 10.5, 1, 11.75, 0, 72 * i + 36, 0],
                 PROPERTIES: {
                     SHOOT_SETTINGS: combineStats([g.drone, g.weak, g.weak, g.celeslower, g.nest_keeper]),
                     TYPE: "sentinelCrossbow",
@@ -218,8 +218,6 @@ module.exports = ({ Class }) => {
                     STAT_CALCULATOR: gunCalcNames.drone,
                     MAX_CHILDREN: 2,
                 },
-            }, {
-                POSITION: [10.5, 10.5, 1, 0, 0, 72 * i + 36, 0],
             }
         )
         Class.nestIndustry.TURRETS.push(
@@ -230,10 +228,10 @@ module.exports = ({ Class }) => {
         )
     }
     Class.nestIndustry.GUNS[1].PROPERTIES.TYPE = ["sentinelCrossbow", {CLEAR_ON_MASTER_UPGRADE: true}],
-    Class.nestIndustry.GUNS[4].PROPERTIES.TYPE = ["sentinelMinigun", {CLEAR_ON_MASTER_UPGRADE: true}],
-    Class.nestIndustry.GUNS[7].PROPERTIES.TYPE = ["sentinelLauncher", {CLEAR_ON_MASTER_UPGRADE: true}],
-    Class.nestIndustry.GUNS[10].PROPERTIES.TYPE = ["sentinelMinigun", {CLEAR_ON_MASTER_UPGRADE: true}],
-    Class.nestIndustry.GUNS[13].PROPERTIES.TYPE = ["sentinelCrossbow", {CLEAR_ON_MASTER_UPGRADE: true}],
+    Class.nestIndustry.GUNS[3].PROPERTIES.TYPE = ["sentinelMinigun", {CLEAR_ON_MASTER_UPGRADE: true}],
+    Class.nestIndustry.GUNS[5].PROPERTIES.TYPE = ["sentinelLauncher", {CLEAR_ON_MASTER_UPGRADE: true}],
+    Class.nestIndustry.GUNS[7].PROPERTIES.TYPE = ["sentinelMinigun", {CLEAR_ON_MASTER_UPGRADE: true}],
+    Class.nestIndustry.GUNS[9].PROPERTIES.TYPE = ["sentinelCrossbow", {CLEAR_ON_MASTER_UPGRADE: true}],
 
     // Long range nester
     Class.nestSynthesizer = {
@@ -257,7 +255,7 @@ module.exports = ({ Class }) => {
         TURRETS: [
             {
                 POSITION: [9, 0, 0, 0, 360, 1],
-                TYPE: 'xPredatorTurret'
+                TYPE: 'predatorTurret'
             }
         ],
     };
@@ -301,17 +299,7 @@ module.exports = ({ Class }) => {
             DAMAGE: base.DAMAGE * 2.5,
         },
         VALUE: 3e5,
-        GUNS: [
-            {
-                POSITION: [0, 10, 1, 10, 0, 0, 0],
-                PROPERTIES: {
-                    SHOOT_SETTINGS: combineStats([g.basic, {reload: 10, size: 2, speed: 0}]),
-                    TYPE: "shockwave",
-                    STAT_CALCULATOR: gunCalcNames.sustained,
-                    AUTOFIRE: true,
-                },
-            }
-        ],
+        GUNS: [],
         TURRETS: [
             {
                 POSITION: [9, 0, 0, 0, 360, 1],
@@ -322,11 +310,11 @@ module.exports = ({ Class }) => {
     for (let i = 0; i < 5; i++) {
         Class.nestPurifier.GUNS.push(
             {
-                POSITION: [13, 12, 0.45, 0, 0, 72 * (i + 0.5), 0],
+                POSITION: [5.5, 7, 1, 6, 0, 72*i+36, 0],
                 PROPERTIES: {
-                    SHOOT_SETTINGS: combineStats([g.basic, {reload: 10}, g.fake]),
+                    SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.pound, g.destroy]),
                     TYPE: "bullet",
-                    AUTOFIRE: true,
+                    LABEL: "Devastator",
                 },
             },
         )

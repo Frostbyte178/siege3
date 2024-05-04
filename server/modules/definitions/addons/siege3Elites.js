@@ -186,10 +186,10 @@ module.exports = ({ Class }) => {
         IGNORED_BY_AI: true,
         GUNS: [
             {
-                POSITION: [18, 10, 1, 0, 0, 0, 0],
+                POSITION: [18, 12, 1, 0, 0, 0, 0],
             },
             {
-                POSITION: [2, 10, 1.1, 18, 0, 0, 0.8],
+                POSITION: [2, 12, 1.1, 18, 0, 0, 0.8],
                 PROPERTIES: {
                     SHOOT_SETTINGS: combineStats([g.trap, g.pound, g.block, {reload: 0.7}]),
                     TYPE: 'assemblerTrap',

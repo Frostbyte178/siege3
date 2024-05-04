@@ -1830,13 +1830,6 @@ class Entity extends EventEmitter {
                 this.velocity.x = this.source.velocity.x;
                 this.velocity.y = this.source.velocity.y;
                 break;
-            case "shockwave":
-                this.x = this.source.x;
-                this.y = this.source.y;
-                this.velocity.x = this.source.velocity.x;
-                this.velocity.y = this.source.velocity.y;
-                this.SIZE += 20;
-                break;
             case 'assembler':
                 this.alpha -= 0.02;
                 this.SIZE += 0.17;

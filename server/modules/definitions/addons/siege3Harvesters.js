@@ -438,13 +438,13 @@ module.exports = ({ Class }) => {
             }, { // Thrusters
                 POSITION: [12.5, 7.5, -0.5, 1, -5, 160, 0],
                 PROPERTIES: {
-                    SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.flank, g.tri, g.thruster, {reload: 0.5, recoil: 2.4, size: 0.8}]),
+                    SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.flank, g.tri, g.thruster, {reload: 0.5, recoil: 2.2, size: 0.8}]),
                     TYPE: "bullet",
                 },
             }, {
                 POSITION: [12.5, 7.5, -0.5, 1, 5, -160, 0],
                 PROPERTIES: {
-                    SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.flank, g.tri, g.thruster, {reload: 0.5, recoil: 2.4, size: 0.8}]),
+                    SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.flank, g.tri, g.thruster, {reload: 0.5, recoil: 2.2, size: 0.8}]),
                     TYPE: "bullet",
                 },
             }, {
@@ -454,7 +454,7 @@ module.exports = ({ Class }) => {
             }, { // Bomb launcher
                 POSITION: [10, 7, 1, 9, 0, 180, 0],
             }, {
-                POSITION: [11, 10.5, 1.4, 5, 0, 180, 0.5],
+                POSITION: [11, 10.5, 1.4, 5, 0, 180, 0.4],
                 PROPERTIES: {
                     SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.launcher, {range: 0.25, speed: 1.9, maxSpeed: 0.4, size: 1.4, reload: 3, recoil: 0.6}]),
                     TYPE: "trueBomb",

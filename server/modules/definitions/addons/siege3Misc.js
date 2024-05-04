@@ -550,21 +550,6 @@ module.exports = ({ Class }) => {
             }
         })
     }
-    Class.shockwave = {
-        PARENT: 'bullet',
-        LABEL: 'Shockwave',
-        BODY: {
-            DENSITY: 1e10,
-            HEALTH: 1e6,
-            SHIELD: 1e6,
-            REGEN: 1e6,
-            RANGE: 15,
-            PENETRATION: 1e-3,
-        },
-        ALPHA: 0.5,
-        MOTION_TYPE: 'shockwave',
-        HITS_OWN_TYPE: 'hard',
-    }
 
     // Turrets
     Class.fireworkTurret = {
@@ -667,7 +652,7 @@ module.exports = ({ Class }) => {
                 POSITION: [10, 12.5, -0.7, 10, 0, 0, 0],
                 PROPERTIES: {
                     SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.launcher, g.rocketeer, {speed: 8, maxSpeed: 2, damage: 0.3, size: 0.7, range: 1.25, reload: 2.5}]),
-                    TYPE: "homingMissile",
+                    TYPE: ["homingMissile", {BODY: {RECOIL_MULTIPLIER: 1.2}}],
                     STAT_CALCULATOR: gunCalcNames.sustained,
                     AUTOFIRE: true,
                 },
@@ -727,14 +712,14 @@ module.exports = ({ Class }) => {
             }, {
                 POSITION: [12, 8, 1.25, 8, 0, 0, 0],
                 PROPERTIES: {
-                    SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.mach, g.mach, {spray: 0.2, shudder: 0.1, speed: 3, maxSpeed: 3, range: 0.25, damage: 6, health: 2/5}]),
+                    SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.mach, g.mach, {reload: 1.15, spray: 0.2, shudder: 0.1, speed: 3, maxSpeed: 3, range: 0.25, damage: 5, health: 0.2}]),
                     TYPE: "growBullet",
                     AUTOFIRE: true,
                 }
             }
         ],
     };
-    Class.xPredatorTurret = {
+    Class.predatorTurret = {
         PARENT: ["genericTank"],
         LABEL: "Flamethrower",
         CONTROLLERS: ["nearestDifferentMaster"],
@@ -759,8 +744,6 @@ module.exports = ({ Class }) => {
                     SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.sniper, g.hunter, g.preda, {range: 2, reload: 0.85}]),
                     TYPE: "bullet"
                 }
-            }, {
-                POSITION: [10, 14, -1.25, 2, 0, 0, 0]
             }
         ],
     };

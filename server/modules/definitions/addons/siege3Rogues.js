@@ -310,22 +310,23 @@ module.exports = ({ Class }) => {
         LABEL: "Turret",
         INDEPENDENT: true,
         CONTROLLERS: ['nearestDifferentMaster'],
-        COLOR: "grey",
+        COLOR: "darkGrey",
+        SHAPE: 8,
         GUNS: [
             {
-                POSITION: [26, 7, 1, 0, 0, 0, 0],
+                POSITION: [24, 7, 1, 0, 0, 0, 0],
                 PROPERTIES: {
                     SHOOT_SETTINGS: combineStats([g.basic, g.gunner, g.mach, g.morespeed, {damage: 0.75}]),
                     TYPE: "bullet",
                 },
             }, {
-                POSITION: [23, 10, 1, 0, 0, 0, 0.5],
+                POSITION: [21, 10, 1, 0, 0, 0, 0.5],
                 PROPERTIES: {
                     SHOOT_SETTINGS: combineStats([g.basic, g.gunner, g.mach, g.morespeed, {damage: 0.75}]),
                     TYPE: "bullet",
                 },
             }, {
-                POSITION: [12, 10, 1.4, 8, 0, 0, 0],
+                POSITION: [12, 10, 1.4, 6, 0, 0, 0],
                 PROPERTIES: {
                     SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.morespeed, {damage: 0.75}]),
                     TYPE: "bullet",
@@ -342,7 +343,7 @@ module.exports = ({ Class }) => {
             {
                 POSITION: [11, 13, 1.5, 9, 0, 0, 0],
                 PROPERTIES: {
-                    SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.mach, {damage: 1.8, reload: 1.4}]),
+                    SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.mach, {damage: 1.4, reload: 1.4}]),
                     TYPE: "bullet",
                     AUTOFIRE: true,
                 },
@@ -393,17 +394,24 @@ module.exports = ({ Class }) => {
         LABEL: "Turret",
         INDEPENDENT: true,
         CONTROLLERS: ['nearestDifferentMaster'],
-        COLOR: "grey",
+        COLOR: "darkGrey",
+        SHAPE: 8,
         GUNS: [
             {
-                POSITION: [22, 13.5, 1, 0, 0, 0, 0]
+                POSITION: [20.5, 13.5, 1, 0, 0, 0, 0]
             }, {
-                POSITION: [26, 8.5, 1, 0, 0, 0, 0],
+                POSITION: [24.5, 8.5, 1, 0, 0, 0, 0],
                 PROPERTIES: {
                     SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.rifle, g.healer, g.morespeed]),
                     TYPE: "healerBulletIndicated"
                 }
             }
+        ],
+        TURRETS: [
+            {
+                POSITION: [13, 0, 0, 0, 360, 1],
+                TYPE: "healerSymbol",
+            },
         ],
     }
     Class.rogueInventorSecondaryTurret = {
@@ -441,13 +449,9 @@ module.exports = ({ Class }) => {
         },
         GUNS: Array(8).fill().map((_, i) => ([
             {
-                POSITION: [12.5, 4, 1, 0, 0, 45*i, 0],
+                POSITION: [12.5, 5, 1, 0, 0, 45*i, 0],
             }, {
-                POSITION: [11, 6, 1, 0, 0, 45*i, 0],
-            },  {
-                POSITION: [1.25, 6, 1, 12.25, 0, 45*i, 0],
-            }, {
-                POSITION: [1, 6, 1.15, 13.5, 0, 45*i, 0],
+                POSITION: [1.75, 5, 1.5, 12.5, 0, 45*i, 0],
                 PROPERTIES: {
                     SHOOT_SETTINGS: combineStats([g.trap, g.block, g.construct, g.veryfast, g.hexatrap, {reload: 1.8}]),
                     TYPE: "unsetPillbox",
@@ -473,16 +477,17 @@ module.exports = ({ Class }) => {
         INDEPENDENT: true,
         BODY: {FOV: 10},
         CONTROLLERS: ['nearestDifferentMaster'],
-        COLOR: "grey",
+        COLOR: "darkGrey",
+        SHAPE: 8,
         GUNS: [
             {
-                POSITION: [29, 9, 1, 0, 0, 0, 0],
+                POSITION: [26, 9.5, 1, 0, 0, 0, 0],
                 PROPERTIES: {
                     SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.sniper, g.assass, g.assass, {range: 1.2}]),
                     TYPE: "bullet",
                 },
             }, {
-                POSITION: [5, 9, -1.4, 8, 0, 0, 0],
+                POSITION: [5, 9.5, -1.4, 8, 0, 0, 0],
             },
         ],
     }
@@ -497,7 +502,7 @@ module.exports = ({ Class }) => {
                 POSITION: [10, 12.5, -0.7, 10, 0, 0, 0],
                 PROPERTIES: {
                     SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.launcher, g.rocketeer, {speed: 8, maxSpeed: 2, damage: 0.25, size: 0.7, range: 1.45, reload: 2.5}]),
-                    TYPE: ["homingMissile", {RECOIL_MULTIPLIER: 0.5}],
+                    TYPE: ["homingMissile", {BODY: {RECOIL_MULTIPLIER: 0.7}}],
                     STAT_CALCULATOR: gunCalcNames.sustained,
                     AUTOFIRE: true,
                 },
@@ -526,13 +531,9 @@ module.exports = ({ Class }) => {
         },
         GUNS: Array(8).fill().map((_, i) => ([
             {
-                POSITION: [12.5, 4, 1, 0, 0, 45*i, 0],
+                POSITION: [12.75, 5, 1, 0, 0, 45*i, 0],
             }, {
-                POSITION: [11, 6, 1, 0, 0, 45*i, 0],
-            },  {
-                POSITION: [1.25, 6, 1, 12.25, 0, 45*i, 0],
-            }, {
-                POSITION: [1, 6, 1.15, 13.5, 0, 45*i, 0],
+                POSITION: [1.75, 5, 1.5, 12.75, 0, 45*i, 0],
                 PROPERTIES: {
                     SHOOT_SETTINGS: combineStats([g.trap, g.block, g.construct, g.fast, g.hexatrap, {health: 1.5, reload: 3}]),
                     TYPE: "unsetSurgeonPillbox",
